@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Silent Robot Systems]]></title>
+  <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
+  <link href="http://www.silentrobots.com/"/>
+  <updated>2014-09-01T20:12:57-04:00</updated>
+  <id>http://www.silentrobots.com/</id>
+  <author>
+    <name><![CDATA[Willis Vandevanter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[IPv6 DNS Guessing Notes]]></title>
+    <link href="http://www.silentrobots.com/blog/2014/08/19/ipv6-dns-reconnaisance/"/>
+    <updated>2014-08-19T00:00:00-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2014/08/19/ipv6-dns-reconnaisance</id>
+    <content type="html"><![CDATA[<p>A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see <a href="http://en.wikipedia.org/wiki/AAAA_record">AAAA record</a>). There are many DNS hostname bruteforcing tools, personally I like <a href="http://ha.ckers.org/fierce/">Fierce</a>. Suppose we have already run our hostname bruteforcing tool against a target domain (e.g. facebook.com). Below we use dig to do a AAAA record lookup for each hostname. <!--more-->Note, the DNS server we use matters. In this example we use 8.8.8.8, to confirm different results try using a.ns.facebook.com instead. Host can also be used instead of dig:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; cat fb_hosts.txt | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>mobile.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>ipv6.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>www.facebook.com Results:
+</span><span class='line'>www.facebook.com. 1903    IN  CNAME   star.c10r.facebook.com.
+</span><span class='line'>star.c10r.facebook.com.   30  IN  AAAA    2a03:2880:f00b:900:face:b00c:0:1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>An offline/quieter way is to use the <a href="https://scans.io/study/sonar.fdns">DNS Record (ANY)</a> set from the Internet-Wide Scan Data Repository done by Rapid7. Using facebook.com as an example again:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | grep -i "\.facebook\.com" | grep AAAA</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This didn&rsquo;t turn up very many results but we can combine the two:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | zgrep "\.facebook\.com" | grep ",A," | cut -d"," -f1 | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>...
+</span><span class='line'>z.c10r.facebook.com Results:
+</span><span class='line'>z.c10r.facebook.com.    59      IN      AAAA    2a03:2880:f00b:305:face:b00c:0:1
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You get the idea =). Not a new concept or technique, just wanted to put some notes in one place.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Blackhat 2014 Arsenal Experience]]></title>
+    <link href="http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/"/>
+    <updated>2014-08-11T17:56:34-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience</id>
+    <content type="html"><![CDATA[<p>Last week at Blackhat Arsenal 2014, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. Arsenal was a great experience and I would highly recommend to anyone as an attendee or presenter. We got some great feedback on the project, so thank you to anyone who stopped by<!-- more -->.</p>
+
+<p>Here were the top 3 feature requests and their associated issue on github:</p>
+
+<h1>Global Variables</h1>
+
+<p>This feature would allow a user to add their own variable in the UI that would render in the template. A classic use case would be to edit the Executive Summary through the UI rather than inside of a template.</p>
+
+<p>Github Issue: <a href="https://github.com/MooseDojo/Serpico/issues/19"><del>Support &ldquo;Global Variables&rdquo; for reports</del></a> Released 08/22</p>
+
+<h1>More Findings</h1>
+
+<p>As of the most recent build Serpico comes with 8 findings; this is an area of active development. More than one person asked for findings from open sources such as CWE.</p>
+
+<p>Github Issue: <a href="https://github.com/MooseDojo/Serpico/issues/20">Include 40 Findings with the default installation</a></p>
+
+<h1>Plugin to 3rd Parties</h1>
+
+<p>This feature would allow a user to parse findings from different vulnerability scanners and import the results.</p>
+
+<p>Github Issue: <a href="https://github.com/MooseDojo/Serpico/issues/21">Support a connector to Nessus</a></p>
+]]></content>
+  </entry>
+  
+</feed>
