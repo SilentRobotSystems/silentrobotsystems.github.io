@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Search all Github Repositories for an Organization - Silent Robot Systems</title>
+  <meta name="author" content="Willis Vandevanter">
+
+  
+  <meta name="description" content="Search All Github Repositories for an Organization gumbler is a script I wrote to search through git commits and introduced in the blog post &ldquo; &hellip;">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.silentrobots.com/blog/2015/01/09/gumbler-updates">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery.sidr.min.js"></script>
+  <script src="/javascripts/ah-blue.js"></script>
+  
+</head> 
+
+<body   >
+  <div class="aux-container">
+    <a id="nav-toggle" href="#sidr"></a>
+    <a id="search-toggle"></a>
+</div>
+
+<!--
+<header class="header-container clearfix">
+        <a href="/"><img src="/images/srs_head.png" height=200 width=200 align=right></a>
+</header>
+-->
+
+
+  <div class="main-container">
+    <div class="main wrapper clearfix">
+    	
+    	<aside>
+			
+			  	<div class="search-container">
+					<br>
+					<center><a href="/"><img src="/images/srs_head.png" height=200 width=200></a></center>
+					<br>
+					<div id="main-nav">
+    <nav>
+        <ul>
+        	<li>
+        		
+					<h3>Recent Posts</h3>
+<ul>
+	
+    <li>
+    	<a href="/blog/2015/01/09/gumbler-updates/">Search All Github Repositories for an Organization</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2014/10/06/gumbler/">Searching Through Git Commits</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2014/09/03/xe-cheatsheet/">XML Entity Cheatsheet</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2014/08/19/ipv6-dns-reconnaisance/">IPv6 DNS Guessing Notes</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">Blackhat 2014 Arsenal Experience</a>
+    </li>
+    
+</ul>
+
+				
+        	</li>
+        	<li>
+        		<ul>
+                    <li><a href="/about" target="_blank">About</a>
+                    <li><a href="/projects" target="_blank">Projects</a>
+        		</ul>
+        	</li>
+        	<li>
+        		<ul>
+        			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
+        		</ul>
+        	</li>
+        </ul>
+    </nav>
+</div>
+
+					<br><br><br>
+				</div>
+			
+		</aside>
+		
+		<br><br><br><br>
+      <div>
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1>
+      Search All Github Repositories for an Organization
+    </h1>
+  
+</header>
+
+  <section><p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits and introduced in the blog post <a href="http://www.silentrobots.com/blog/2014/10/06/gumbler/">&ldquo;Searching Through Git Commits&rdquo;</a>. Recently I wanted to run Gumbler across all repositories for an organization, the steps are discussed below. <!--more--></p>
+
+<p>First, we need to grab a list of repositories for the ORG. This can be done using the API</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl "https://api.github.com/orgs/[ORG NAME]/repos?page=1&per_page=10000" &gt; repos.json
+</span><span class='line'>curl "https://api.github.com/orgs/[ORG NAME]/repos?page=2&per_page=10000" &gt;&gt; repos.json
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Note, the API limits the number of values returned so you will want to update the page count to make sure you get them all.</p>
+
+<p>Next we iterate through each repository, clone it, and run gumbler across the repo. A simple Ruby script is given below. Note, ignore any repos that were forked as they aren&rsquo;t specific to the orgnization.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'json'
+</span><span class='line'>
+</span><span class='line'># specify repos.json as an argument
+</span><span class='line'>file = File.read(ARGV[0])
+</span><span class='line'>
+</span><span class='line'># parse the json
+</span><span class='line'>data_hash = JSON.parse(file)
+</span><span class='line'>
+</span><span class='line'># iterate each hash
+</span><span class='line'>data_hash.each do |hash|
+</span><span class='line'>  # ignore forked repos
+</span><span class='line'>  if !(hash["fork"])
+</span><span class='line'>      puts "|+| Testing #{hash["name"]}"
+</span><span class='line'>      
+</span><span class='line'>      # clone the project
+</span><span class='line'>      `git clone https://github.com/[ORG]/#{hash["name"]}.git`
+</span><span class='line'>      
+</span><span class='line'>      # Gumbler requires full directory paths
+</span><span class='line'>      `ruby ~/gumbler/gumbler.rb -s -p #{hash["name"]} ~/[ORG]/results/`
+</span><span class='line'>
+</span><span class='line'>      sleep(3)
+</span><span class='line'>  end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+
+</section>
+
+
+
+	
+</article>
+</div>
+
+    </div>
+  </div>
+  
+
+
+  
+
+</body>
+</html>
