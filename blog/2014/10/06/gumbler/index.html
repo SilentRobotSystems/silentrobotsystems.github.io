@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Searching through git commits - Silent Robot Systems</title>
+  <title>Searching Through Git Commits - Silent Robot Systems</title>
   <meta name="author" content="Willis Vandevanter">
 
   
@@ -61,6 +61,10 @@
 <ul>
 	
     <li>
+    	<a href="/blog/2015/01/09/gumbler-updates/">Search All Github Repositories for an Organization</a>
+    </li>
+    
+    <li>
     	<a href="/blog/2014/10/06/gumbler/">Searching Through Git Commits</a>
     </li>
     
@@ -90,7 +94,7 @@
         		<ul>
         			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
                     <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
-                    <li>Email - <a href="" target="_blank">will =AT= silentrobots.com</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
         		</ul>
         	</li>
         </ul>
@@ -123,12 +127,9 @@
 <!-- more -->
 
 
-
-
 <h1>.gitignore</h1>
 
-
-<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where  a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit &ldquo;secret&rdquo; data.</p>
+<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit “secret” data.</p>
 
 <p>I am a big fan of what Netflix is doing with regards to open source and security. After looking through a number of their projects, I noticied Priam has a few commits with non-damaging files from the gitignore.</p>
 
@@ -176,12 +177,11 @@
 </span><span class='line'>....</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (<i>cough</i> usernames, passwords). This shouldn&rsquo;t be that surprising.</p>
+<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (cough usernames, passwords). This shouldn’t be that surprising.</p>
 
 <h1>Searching Commit Logs</h1>
 
-
-<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with &ldquo;CVE&rdquo; in it. Gumbler will output a diff from the files changed in the commit.</p>
+<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with “CVE” in it. Gumbler will output a diff from the files changed in the commit.</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -232,8 +232,6 @@
 </span><span class='line'>+++ b/actionpack/lib/action_dispatch/http/request.rb
 </span><span class='line'>....</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<p></p>
 
 <p>As the README says, be careful using the tool as it uses Command Execution to search. A malicious git project could take advantage of this. Ping me with better ways to handle this.</p>
 </section>
