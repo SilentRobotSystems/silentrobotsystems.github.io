@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Silent Robot Systems</title>
+  <title>ldapsearch notes - Silent Robot Systems</title>
   <meta name="author" content="Willis Vandevanter">
 
   
-  <meta name="description" content="Blog Archive 2015 ldapsearch notes
-Feb 25 2015 Search all Github Repositories for an Organization
-Jan 09 2015 2014 Searching Through Git Commits
-Oct &hellip;">
+  <meta name="description" content="Ldapsearch Notes I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch Installing &hellip;">
   
 
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +17,7 @@ Oct &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.silentrobots.com/blog/archives">
+  <link rel="canonical" href="http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
@@ -111,85 +108,56 @@ Oct &hellip;">
 		
 		<br><br><br><br>
       <div>
-<article role="article">
-  
-  <header>
-    <h1 class="entry-title">Blog Archive</h1>
-  </header>
-  
-  <div id="blog-archives">
-
-
-
-  
-  <h2>2015</h2>
-
 <article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
   
-<h1><a href="/blog/2015/02/25/ldapsearch_notes/">ldapsearch notes</a></h1>
-<time datetime="2015-02-25T23:00:00-05:00" pubdate><span class='month'>Feb</span> <span class='day'>25</span> <span class='year'>2015</span></time>
+    <h1>
+      Ldapsearch Notes
+    </h1>
+  
+</header>
+
+  <section><p>I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch</p>
+
+<!-- more -->
 
 
+<h1>Installing ldapsearch on Ubuntu</h1>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install ldap-utils</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<h1>Root-DSE object</h1>
+
+<p>nmap includes a script to gather info from a LDAP root-dse object (<a href="http://nmap.org/nsedoc/scripts/ldap-rootdse.html">http://nmap.org/nsedoc/scripts/ldap-rootdse.html</a>). We can also use ldapsearch to test:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -b "" -s base 'objectclass=*' -h [IP]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p></p>
+
+<h1>Open LDAP server</h1>
+
+<p>Connect to an open LDAP server, john the ripper can be used to crack passwords that are returned:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -h [IP] -b "dc=[y],dc=com"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</section>
+
+
+
+	
 </article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2015/01/09/gumbler-updates/">Search all Github Repositories for an Organization</a></h1>
-<time datetime="2015-01-09T23:00:00-05:00" pubdate><span class='month'>Jan</span> <span class='day'>09</span> <span class='year'>2015</span></time>
-
-
-</article>
-
-
-
-  
-  <h2>2014</h2>
-
-<article>
-  
-<h1><a href="/blog/2014/10/06/gumbler/">Searching Through Git Commits</a></h1>
-<time datetime="2014-10-06T00:00:00-04:00" pubdate><span class='month'>Oct</span> <span class='day'>06</span> <span class='year'>2014</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/09/03/xe-cheatsheet/">XML Entity Cheatsheet</a></h1>
-<time datetime="2014-09-03T00:00:00-04:00" pubdate><span class='month'>Sep</span> <span class='day'>03</span> <span class='year'>2014</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/08/19/ipv6-dns-reconnaisance/">IPv6 DNS Guessing Notes</a></h1>
-<time datetime="2014-08-19T00:00:00-04:00" pubdate><span class='month'>Aug</span> <span class='day'>19</span> <span class='year'>2014</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">Blackhat 2014 Arsenal Experience</a></h1>
-<time datetime="2014-08-11T17:56:34-04:00" pubdate><span class='month'>Aug</span> <span class='day'>11</span> <span class='year'>2014</span></time>
-
-
-</article>
-
 </div>
 
-  
-</article>
-</div>
     </div>
   </div>
   

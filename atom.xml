@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2015-01-12T12:51:46-05:00</updated>
+  <updated>2015-03-06T15:42:48-05:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ldapsearch notes]]></title>
+    <link href="http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes/"/>
+    <updated>2015-02-25T23:00:00-05:00</updated>
+    <id>http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes</id>
+    <content type="html"><![CDATA[<p>I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch</p>
+
+<!-- more -->
+
+
+<h1>Installing ldapsearch on Ubuntu</h1>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install ldap-utils</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Root-DSE object</h1>
+
+<p>nmap includes a script to gather info from a LDAP root-dse object (<a href="http://nmap.org/nsedoc/scripts/ldap-rootdse.html">http://nmap.org/nsedoc/scripts/ldap-rootdse.html</a>). We can also use ldapsearch to test:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -b "" -s base 'objectclass=*' -h [IP]</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h1>Open LDAP server</h1>
+
+<p>Connect to an open LDAP server, john the ripper can be used to crack passwords that are returned:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -h [IP] -b "dc=[y],dc=com"</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Search all Github Repositories for an Organization]]></title>
