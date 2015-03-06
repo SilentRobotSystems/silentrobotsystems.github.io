@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2015-03-06T15:42:48-05:00</updated>
+  <updated>2015-03-06T17:11:39-05:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,28 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Exploiting XXE Vulnerabilities in OXML Documents - Part 1]]></title>
+    <link href="http://www.silentrobots.com/blog/2015/03/04/oxml_xxe/"/>
+    <updated>2015-03-04T23:00:00-05:00</updated>
+    <id>http://www.silentrobots.com/blog/2015/03/04/oxml_xxe</id>
+    <content type="html"><![CDATA[<p>OXML is a common document format; think docx (Microsoft Word Document), pptx (Microsoft Powerpoint), xlsx (Excel Spreadsheet), etc.</p>
+
+<!-- more -->
+
+
+<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
+
+<p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
+
+<p>If you review the Microsoft link posted earlier you will see that each XML file plays a different role. I have found varying levels of success in which XML file I embed the XXE exploit into. To help out with this testing process I wrote a tool:</p>
+
+<p><a href="https://github.com/BuffaloWill/oxml_xxe">https://github.com/BuffaloWill/oxml_xxe</a></p>
+
+<p>Keeping with 300 words or less I will stop here and pick up with oxml_xxe usage in the next blog post.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ldapsearch notes]]></title>
