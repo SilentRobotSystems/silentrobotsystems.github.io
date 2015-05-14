@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Exploiting XXE Vulnerabilities in OXML Documents - Part 1 - Silent Robot Systems</title>
+  <title>Silent Robot Systems</title>
   <meta name="author" content="Willis Vandevanter">
 
   
-  <meta name="description" content="Exploiting XXE Vulnerabilities in OXML Documents - Part 1 OXML is a common document format; think docx (Microsoft Word Document), pptx (Microsoft &hellip;">
+  <meta name="description" content="XML Entity Cheatsheet An XML Entity testing cheatsheet. Testing was done using an older vulnerable version of nokogiri. In IRB you can require &hellip;">
   
 
   <meta name="HandheldFriendly" content="True">
@@ -17,7 +17,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.silentrobots.com/blog/2015/03/04/oxml_xxe">
+  <link rel="canonical" href="http://www.silentrobots.com/blog/x2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
@@ -107,7 +107,9 @@
 		</aside>
 		
 		<br><br><br><br>
-      <div>
+      
+
+
 <article>
 	<header>
   <div class="article-tags">
@@ -116,33 +118,138 @@
 
   </div>
   
-    <h1>
-      Exploiting XXE Vulnerabilities in OXML Documents - Part 1
-    </h1>
+    <h1><a href="/blog/2014/09/03/xe-cheatsheet/">
+      XML Entity Cheatsheet
+    </a></h1>
   
 </header>
 
-  <section><p>OXML is a common document format; think docx (Microsoft Word Document), pptx (Microsoft Powerpoint), xlsx (Excel Spreadsheet), etc.</p>
+  <section><p>An XML Entity testing cheatsheet. Testing was done using an older vulnerable version of nokogiri. In IRB you can require previous versions of gems. Certain techniques (e.g. XInclude) may require additional settings in Nokogiri.</p>
 
-<!-- more -->
-
-
-<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
-
-<p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
-
-<p>If you review the Microsoft link posted earlier you will see that each XML file plays a different role. I have found varying levels of success in which XML file I embed the XXE exploit into. To help out with this testing process I wrote a tool:</p>
-
-<p><a href="https://github.com/BuffaloWill/oxml_xxe">https://github.com/BuffaloWill/oxml_xxe</a></p>
-
-<p>Keeping with 300 words or less I will stop here and pick up with oxml_xxe usage in the next blog post.</p>
 </section>
+  
+  
+  <footer>
+      <div class="article-date">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-03T00:00:00-04:00" pubdate data-updated="true"></time></div>
+  </footer>
+  
 
 
 
 	
+		<p><a href="/blog/2014/09/03/xe-cheatsheet/">Read on &rarr;</a></p>
+		
 </article>
+
+
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1><a href="/blog/2014/08/19/ipv6-dns-reconnaisance/">
+      IPv6 DNS Guessing Notes
+    </a></h1>
+  
+</header>
+
+  <section><p>A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see <a href="http://en.wikipedia.org/wiki/AAAA_record">AAAA record</a>). There are many DNS hostname bruteforcing tools, personally I like <a href="http://ha.ckers.org/fierce/">Fierce</a>. Suppose we have already run our hostname bruteforcing tool against a target domain (e.g. facebook.com). Below we use dig to do a AAAA record lookup for each hostname. </section>
+  
+  
+  <footer>
+      <div class="article-date">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-19T00:00:00-04:00" pubdate data-updated="true"></time></div>
+  </footer>
+  
+
+
+
+	
+		<p><a href="/blog/2014/08/19/ipv6-dns-reconnaisance/">Read on &rarr;</a></p>
+		
+</article>
+
+
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1><a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">
+      Blackhat 2014 Arsenal Experience
+    </a></h1>
+  
+</header>
+
+  <section><p>Last week at Blackhat Arsenal 2014, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. Arsenal was a great experience and I would highly recommend to anyone as an attendee or presenter. We got some great feedback on the project, so thank you to anyone who stopped by</section>
+  
+  
+  <footer>
+      <div class="article-date">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-11T17:56:34-04:00" pubdate data-updated="true"></time></div>
+  </footer>
+  
+
+
+
+	
+		<p><a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">Read on &rarr;</a></p>
+		
+</article>
+
+<div class="pagination">
+
+
+	<a class="next" href="1">Newer &rarr;</a>
+
+
+<a class="next" href="1">Newer &rarr;</a>
+
 </div>
+
 
     </div>
   </div>
