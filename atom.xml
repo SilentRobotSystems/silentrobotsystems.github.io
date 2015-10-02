@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2015-05-14T14:45:57-04:00</updated>
+  <updated>2015-10-02T11:08:19-04:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Blackhat 2015 Arsenal]]></title>
+    <link href="http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/"/>
+    <updated>2015-09-10T17:56:34-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal</id>
+    <content type="html"><![CDATA[<p>Last month at Blackhat Arsenal 2015, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. This was our second time at Arsenal. Yet again, awesome people, great venue, and overall a highlight for me of BH/DC/LV. We got some excellent feedback on the project, so thank you to anyone who stopped by<!-- more -->.</p>
+
+<p>Last year I posted the top 3 feature requests and we squashed them (woot!). These are requested features/bugs this year and their associated issue on github:</p>
+
+<h1>Fix Image Breakage in Presentations</h1>
+
+<p>Automated Presentation creation was added the week before and had a rather embarassing stack trace in certain combinations; this was fixed in <a href="https://github.com/MooseDojo/Serpico/commit/61fe996af37a79c94b34eea6fb5cf0a208fb87b5"> this commit</a></p>
+
+<h1>Statistics</h1>
+
+<p>More than a few people asked for more correlation; &ldquo;Support Findings Trending&rdquo; (<a href="https://github.com/MooseDojo/Serpico/issues/25">Issue 25</a>).</p>
+
+<h1>Wiki Additions</h1>
+
+<p>Add the following information to the wiki:</p>
+
+<ul>
+<li>Report Creation Example</li>
+<li>Presentation Creation</li>
+<li>Export/Import Examples</li>
+</ul>
+
+
+<h1>Submit To Kali</h1>
+
+<p>Here is the submission: <a href="https://bugs.kali.org/view.php?id=2615">New Tool Request: SERPICO</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Ruby Exec with Open and Pipe]]></title>
@@ -438,6 +472,67 @@
 
 
 <p>You get the idea =). Not a new concept or technique, just wanted to put some notes in one place.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dynamic LINQ OrderBy Injection Thoughts]]></title>
+    <link href="http://www.silentrobots.com/blog/2014/08/19/dynamic-linq-sql-attacks/"/>
+    <updated>2014-08-19T00:00:00-04:00</updated>
+    <id>http://www.silentrobots.com/blog/2014/08/19/dynamic-linq-sql-attacks</id>
+    <content type="html"><![CDATA[<p>Dynamic LINQ is a popular ASP.NET MVC library (<LINK>) for generating LINQ expressions from strings. To install from Nuget:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>install-package System.Linq.Dynamic</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are a number of interesting (and useful) methods exposed by Dynamic LINQ. For example, OrderBy on data result:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;&lt;public static&gt;&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Imagine this OrderBy used in a Web API request:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://[APP]/search/users?OrderBy=Name&limit=50</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In the controller this would likely look like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>results = users.OrderBy(&lt;&lt;TODO&gt;&gt;)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First, let&rsquo;s point out this is not OrderBy injectable in the classic way (&lt;<LINK>>; &lt;<LINK>>) as Dynamic LINQ protects against this (&lt;<LINK>>). However, this code can still be abused by an attacker.</p>
+
+<p>Dynamic LINQ features the ability to sort on anything involved in the IQueryable object:
+- attributes of the model
+- methods of the model (!)
+- attributes of subclasses of the model
+- methods of subclasses of the model (!!!)</p>
+
+<h1>Example 1 - Guessing Model Attributes</h1>
+
+<p>Consider our Web API from earlier where we are searching for users and ordering by &ldquo;Name&rdquo;. &ldquo;Name&rdquo; is an attribute of the model User. Let&rsquo;s say we took a guess that there was a &ldquo;PasswordHash&rdquo; field in the User model:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>http://[APP]/search/users?OrderBy=PreviousPasswordHash&limit=50</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The error responses from the server can help us determine if the attribute of the model exists.</p>
+
+<h1>Example 2 - Reading &ldquo;Secret&rdquo; Attributes </h1>
+
+<p>Let&rsquo;s imagine that the User model has a PreviousPassword attribute which is an MD5 string (not realistic I know, but for arguments sake):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[StringLength(32)]
+</span><span class='line'>public string PreviousPassword { get; set; }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;ve confirmed it with example 1, now what? Notice that the PreviousPassword is a string and remember that we can call methods on sub classes.</p>
 ]]></content>
   </entry>
   

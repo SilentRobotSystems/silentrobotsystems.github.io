@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/</loc>
+    <lastmod>2015-09-10T17:56:34-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://www.silentrobots.com/blog/2015/04/14/simple_ruby_exec/</loc>
     <lastmod>2015-04-14T00:00:00-04:00</lastmod>
     <priority>0.8</priority>
@@ -45,6 +51,12 @@
   </url>
   
   <url>
+    <loc>http://www.silentrobots.com/blog/2014/08/19/dynamic-linq-sql-attacks/</loc>
+    <lastmod>2014-08-19T00:00:00-04:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/</loc>
     <lastmod>2014-08-11T17:56:34-04:00</lastmod>
     <priority>0.8</priority>
@@ -52,36 +64,36 @@
   
   
   <url>
-    <loc>http://www.silentrobots.com/blog/archives/</loc>
-    <lastmod>2015-05-14T14:45:57-04:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <url>
     <loc>http://www.silentrobots.com/</loc>
-    <lastmod>2015-05-14T14:45:57-04:00</lastmod>
+    <lastmod>2015-10-02T11:08:19-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
+    <loc>http://www.silentrobots.com/blog/archives/</loc>
+    <lastmod>2015-10-02T11:08:19-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
     <loc>http://www.silentrobots.com/about/</loc>
-    <lastmod>2015-05-14T14:45:57-04:00</lastmod>
+    <lastmod>2015-10-02T11:08:19-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.silentrobots.com/projects/</loc>
-    <lastmod>2015-05-14T14:45:57-04:00</lastmod>
+    <lastmod>2015-10-02T11:08:19-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://www.silentrobots.com/list_posts.html</loc>
-    <lastmod>2015-05-14T14:45:57-04:00</lastmod>
+    <lastmod>2015-10-02T11:08:19-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
