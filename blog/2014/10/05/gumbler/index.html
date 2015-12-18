@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Searching Through Git Commits - Silent Robot Systems</title>
+  <meta name="author" content="Willis Vandevanter">
+
+  
+  <meta name="description" content="Searching Through Git Commits gumbler is a script I wrote to search through git commits. Examples from github are discussed below. .gitignore A &hellip;">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.silentrobots.com/blog/2014/10/05/gumbler">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery.sidr.min.js"></script>
+  <script src="/javascripts/ah-blue.js"></script>
+  
+</head> 
+
+<body   >
+  <div class="aux-container">
+    <a id="nav-toggle" href="#sidr"></a>
+    <a id="search-toggle"></a>
+</div>
+
+<!--
+<header class="header-container clearfix">
+        <a href="/"><img src="/images/srs_head.png" height=200 width=200 align=right></a>
+</header>
+-->
+
+
+  <div class="main-container">
+    <div class="main wrapper clearfix">
+    	
+    	<aside>
+			
+			  	<div class="search-container">
+					<br>
+					<center><a href="/"><img src="/images/srs_head.png" height=200 width=200></a></center>
+					<br>
+					<div id="main-nav">
+    <nav>
+        <ul>
+        	<li>
+        		
+					<h3>Recent Posts</h3>
+<ul>
+	
+    <li>
+    	<a href="/blog/2015/12/14/xe-cheatsheet-update/">XML Entity Cheatsheet - Updated</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/09/10/blackhat-2015-arsenal/">Blackhat 2015 Arsenal</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/04/13/simple_ruby_exec/">Simple Ruby Exec with Open and Pipe</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/03/04/oxml_xxe/">Exploiting XXE Vulnerabilities in OXML Documents - Part 1</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/02/25/ldapsearch_notes/">ldapsearch notes</a>
+    </li>
+    
+</ul>
+
+				
+        	</li>
+        	<li>
+        		<ul>
+                    <li><a href="/about" target="_blank">About</a>
+                    <li><a href="/projects" target="_blank">Projects</a>
+        		</ul>
+        	</li>
+        	<li>
+        		<ul>
+        			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
+        		</ul>
+        	</li>
+        </ul>
+    </nav>
+</div>
+
+					<br><br><br>
+				</div>
+			
+		</aside>
+		
+		<br><br><br><br>
+      <div>
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1>
+      Searching Through Git Commits
+    </h1>
+  
+</header>
+
+  <section><p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits. Examples from github are discussed below.</p>
+
+<!-- more -->
+
+
+<h1>.gitignore</h1>
+
+<p>A gitignore file is used to specify files that should not be tracked by git (source <a href="http://git-scm.com/docs/gitignore">gitignore</a>). In the default case, gumbler will read the gitignore file for the project and search every revision for a case where a file from gitignore was committed. Possible use cases would be as a pen tester looking for reconnaisance data (e.g. developer usernames/passwords, staging hosts/services, etc.) or a developer to verify projects did not previously commit “secret” data.</p>
+
+<p>I am a big fan of what Netflix is doing with regards to open source and security. After looking through a number of their projects, I noticied Priam has a few commits with non-damaging files from the gitignore.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$. git clone https://github.com/Netflix/Priam.git
+</span><span class='line'>Cloning into 'Priam'...
+</span><span class='line'>....
+</span><span class='line'>Checking connectivity... done.
+</span><span class='line'>$. ruby gumbler/gumbler.rb Priam/ gumbler_testing/tmp/
+</span><span class='line'>|-| Jumping to remote @directory Priam/
+</span><span class='line'>|-| Storing every revision
+</span><span class='line'>checking for *.com..
+</span><span class='line'>checking for *.class..
+</span><span class='line'>.....
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 697fd66aae9beed107e13f49a741455f1d9d8dd9 .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 47bdb537789c034493e94d8977eae77ecbfd5b24 .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .classpath, Found it in BRANCH : 442862d4a8d4d18d0e176ded8795dd45a24528fc .classpath. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>....
+</span><span class='line'>checking for .project..
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 697fd66aae9beed107e13f49a741455f1d9d8dd9 .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 0941d9e0e0dda3ee1d9d4dda757d59ffb641abcf .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>|+| Looking for .project, Found it in BRANCH : 47bdb537789c034493e94d8977eae77ecbfd5b24 .project. Storing it in gumbler_testing/tmp/.
+</span><span class='line'>....
+</span><span class='line'>checking for .settings..
+</span><span class='line'>....</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>.classpath or .project are not damaging in this case and, hence, are used as the example. On a pen test or in collaborative projects I have found much worse (cough usernames, passwords). This shouldn’t be that surprising.</p>
+
+<h1>Searching Commit Logs</h1>
+
+<p>Another use case for gumbler is to look through commit history. Using Ruby on Rails as an example, we can search from for any commit with “CVE” in it. Gumbler will output a diff from the files changed in the commit.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$. ruby gumbler/gumbler.rb --grep CVE rails/ tmp/
+</span><span class='line'>|!| skipping .gitignore, searching commit log for CVE
+</span><span class='line'>$. ls tmp/
+</span><span class='line'>060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30_15:13:03_-0700.diff  88cc1688d0cb828c17706b41a8bd27870f2a2beb-2013-01-08_12:11:18_-0800.diff
+</span><span class='line'>08d0a11a3f62718d601d39e617c834759cf59bbb-2014-02-18_15:38:50_-0300.diff  8be6913990c30f63618173da722148892348dcc9-2013-03-15_17:45:53_-0700.diff
+</span><span class='line'>0b58a7ff420d7ef4b643c521a62be7259dd2f5cb-2011-02-08_14:21:12_-0800.diff  8e577fe560d5756fcc67840ba304d79ada6804e4-2013-01-08_12:41:24_-0800.diff
+</span><span class='line'>0c7ac34aed1845044cd1911e5a775366d7ca41c1-2013-12-02_16:42:16_-0800.diff  9340f89849606dba02f44038171f3837f883fd4e-2012-05-30_15:09:13_-0700.diff
+</span><span class='line'>2392535f4085d88186097e3c23414e958fb1d16d-2013-03-18_10:17:32_-0700.diff  93fb4c1e62dc9605eecbfaffda2becc85890fa5f-2014-07-10_10:20:16_-0700.diff
+</span><span class='line'>...
+</span><span class='line'>$. cat 060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30_15\:13\:03_-0700.diff 
+</span><span class='line'>060c91cd59ab86583a8f2f52142960d3433f62f5-2012-05-30 15:13:03 -0700==&gt; 2012-05-30 15:13:03 -0700 Strip [nil] from parameters hash. Thanks to Ben Murphy for reporting this! Strip [nil] from parameters hash.
+</span><span class='line'>Thanks to Ben Murphy for reporting this!
+</span><span class='line'>
+</span><span class='line'>CVE-2012-2660
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>:100644 100644 aa5ba3e... 6757a53... M    actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>:100644 100644 c3f009a... 6ea66f9... M    actionpack/test/dispatch/request/query_string_parsing_test.rb
+</span><span class='line'>
+</span><span class='line'>diff --git a/actionpack/lib/action_dispatch/http/request.rb b/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>index aa5ba3e..6757a53 100644
+</span><span class='line'>--- a/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>+++ b/actionpack/lib/action_dispatch/http/request.rb
+</span><span class='line'>....</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>As the README says, be careful using the tool as it uses Command Execution to search. A malicious git project could take advantage of this. Ping me with better ways to handle this.</p>
+</section>
+
+
+
+	
+</article>
+</div>
+
+    </div>
+  </div>
+  
+
+
+  
+
+</body>
+</html>

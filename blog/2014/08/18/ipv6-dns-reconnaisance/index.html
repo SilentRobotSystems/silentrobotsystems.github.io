@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>IPv6 DNS Guessing Notes - Silent Robot Systems</title>
+  <meta name="author" content="Willis Vandevanter">
+
+  
+  <meta name="description" content="IPv6 DNS Guessing Notes A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see AAAA record). There are many DNS hostname &hellip;">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery.sidr.min.js"></script>
+  <script src="/javascripts/ah-blue.js"></script>
+  
+</head> 
+
+<body   >
+  <div class="aux-container">
+    <a id="nav-toggle" href="#sidr"></a>
+    <a id="search-toggle"></a>
+</div>
+
+<!--
+<header class="header-container clearfix">
+        <a href="/"><img src="/images/srs_head.png" height=200 width=200 align=right></a>
+</header>
+-->
+
+
+  <div class="main-container">
+    <div class="main wrapper clearfix">
+    	
+    	<aside>
+			
+			  	<div class="search-container">
+					<br>
+					<center><a href="/"><img src="/images/srs_head.png" height=200 width=200></a></center>
+					<br>
+					<div id="main-nav">
+    <nav>
+        <ul>
+        	<li>
+        		
+					<h3>Recent Posts</h3>
+<ul>
+	
+    <li>
+    	<a href="/blog/2015/12/14/xe-cheatsheet-update/">XML Entity Cheatsheet - Updated</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/09/10/blackhat-2015-arsenal/">Blackhat 2015 Arsenal</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/04/13/simple_ruby_exec/">Simple Ruby Exec with Open and Pipe</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/03/04/oxml_xxe/">Exploiting XXE Vulnerabilities in OXML Documents - Part 1</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/02/25/ldapsearch_notes/">ldapsearch notes</a>
+    </li>
+    
+</ul>
+
+				
+        	</li>
+        	<li>
+        		<ul>
+                    <li><a href="/about" target="_blank">About</a>
+                    <li><a href="/projects" target="_blank">Projects</a>
+        		</ul>
+        	</li>
+        	<li>
+        		<ul>
+        			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
+        		</ul>
+        	</li>
+        </ul>
+    </nav>
+</div>
+
+					<br><br><br>
+				</div>
+			
+		</aside>
+		
+		<br><br><br><br>
+      <div>
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1>
+      IPv6 DNS Guessing Notes
+    </h1>
+  
+</header>
+
+  <section><p>A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see <a href="http://en.wikipedia.org/wiki/AAAA_record">AAAA record</a>). There are many DNS hostname bruteforcing tools, personally I like <a href="http://ha.ckers.org/fierce/">Fierce</a>. Suppose we have already run our hostname bruteforcing tool against a target domain (e.g. facebook.com). Below we use dig to do a AAAA record lookup for each hostname. <!--more-->Note, the DNS server we use matters. In this example we use 8.8.8.8, to confirm different results try using a.ns.facebook.com instead. Host can also be used instead of dig:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; cat fb_hosts.txt | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>mobile.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>ipv6.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>www.facebook.com Results:
+</span><span class='line'>www.facebook.com. 1903    IN  CNAME   star.c10r.facebook.com.
+</span><span class='line'>star.c10r.facebook.com.   30  IN  AAAA    2a03:2880:f00b:900:face:b00c:0:1</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>An offline/quieter way is to use the <a href="https://scans.io/study/sonar.fdns">DNS Record (ANY)</a> set from the Internet-Wide Scan Data Repository done by Rapid7. Using facebook.com as an example again:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | grep -i "\.facebook\.com" | grep AAAA</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>This didn&rsquo;t turn up very many results but we can combine the two:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | zgrep "\.facebook\.com" | grep ",A," | cut -d"," -f1 | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>...
+</span><span class='line'>z.c10r.facebook.com Results:
+</span><span class='line'>z.c10r.facebook.com.    59      IN      AAAA    2a03:2880:f00b:305:face:b00c:0:1
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>You get the idea =). Not a new concept or technique, just wanted to put some notes in one place.</p>
+</section>
+
+
+
+	
+</article>
+</div>
+
+    </div>
+  </div>
+  
+
+
+  
+
+</body>
+</html>
