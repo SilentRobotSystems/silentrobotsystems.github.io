@@ -127,7 +127,7 @@
 <!-- more -->
 
 
-<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
+<p>An OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
 
 <p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
 
