@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="http://www.silentrobots.com/"/>
-  <updated>2015-12-15T07:27:06-08:00</updated>
+  <updated>2016-03-29T10:12:17-07:00</updated>
   <id>http://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud Metadata URL List]]></title>
+    <link href="http://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list/"/>
+    <updated>2016-03-27T21:00:00-07:00</updated>
+    <id>http://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list</id>
+    <content type="html"><![CDATA[<p>Managed to land the SSRF Cloud Metadata technique in a few different scenarios recently. If you haven&rsquo;t seen the talk <a href="https://youtu.be/JTOWxi17k-w?t=1411">BHUSA 2014 - Bringing a Machete to the Amazon</a> I recommend it.</p>
+
+<!-- more -->
+
+
+<p>To make life a little easier created a living URL list for Metadata broken down by cloud. There are a few more than he discusses in the talk but still has work to go. Submit a PR if you see some missing.</p>
+
+<p><a href="https://gist.github.com/BuffaloWill/fa96693af67e3a3dd3fb">https://gist.github.com/BuffaloWill/fa96693af67e3a3dd3fb</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[XML Entity Cheatsheet - Updated]]></title>
@@ -23,7 +39,7 @@
 <!-- more -->
 
 
-<p>XML Headers:</p>
+<p>XML Declaration(s):</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -202,7 +218,7 @@
 <!-- more -->
 
 
-<p>An OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
+<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
 
 <p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
 

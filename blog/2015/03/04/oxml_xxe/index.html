@@ -61,6 +61,10 @@
 <ul>
 	
     <li>
+    	<a href="/blog/2016/03/27/cloud_metadata_list/">Cloud Metadata URL List</a>
+    </li>
+    
+    <li>
     	<a href="/blog/2015/12/14/xe-cheatsheet-update/">XML Entity Cheatsheet - Updated</a>
     </li>
     
@@ -74,10 +78,6 @@
     
     <li>
     	<a href="/blog/2015/03/04/oxml_xxe/">Exploiting XXE Vulnerabilities in OXML Documents - Part 1</a>
-    </li>
-    
-    <li>
-    	<a href="/blog/2015/02/25/ldapsearch_notes/">ldapsearch notes</a>
     </li>
     
 </ul>
@@ -127,7 +127,7 @@
 <!-- more -->
 
 
-<p>An OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
+<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
 
 <p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
 
