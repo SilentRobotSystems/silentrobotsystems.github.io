@@ -3,103 +3,109 @@
   
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list/</loc>
+    <loc>https://www.silentrobots.com/blog/2016/04/30/exploiting-xxe-in-file-upload/</loc>
+    <lastmod>2016-04-30T21:00:00-07:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list/</loc>
     <lastmod>2016-03-27T21:00:00-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update/</loc>
     <lastmod>2015-12-14T20:00:00-08:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/</loc>
     <lastmod>2015-09-10T14:56:34-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec/</loc>
     <lastmod>2015-04-13T21:00:00-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/03/04/oxml_xxe/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/03/04/oxml_xxe/</loc>
     <lastmod>2015-03-04T20:00:00-08:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes/</loc>
     <lastmod>2015-02-25T20:00:00-08:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2015/01/09/gumbler-updates/</loc>
+    <loc>https://www.silentrobots.com/blog/2015/01/09/gumbler-updates/</loc>
     <lastmod>2015-01-09T20:00:00-08:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2014/10/05/gumbler/</loc>
+    <loc>https://www.silentrobots.com/blog/2014/10/05/gumbler/</loc>
     <lastmod>2014-10-05T21:00:00-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet/</loc>
+    <loc>https://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet/</loc>
     <lastmod>2014-09-02T21:00:00-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance/</loc>
+    <loc>https://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance/</loc>
     <lastmod>2014-08-18T21:00:00-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/</loc>
+    <loc>https://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/</loc>
     <lastmod>2014-08-11T14:56:34-07:00</lastmod>
     <priority>0.8</priority>
   </url>
   
   
   <url>
-    <loc>http://www.silentrobots.com/blog/archives/</loc>
-    <lastmod>2016-03-29T10:12:17-07:00</lastmod>
+    <loc>https://www.silentrobots.com/blog/archives/</loc>
+    <lastmod>2016-05-28T17:49:46-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/</loc>
-    <lastmod>2016-03-29T10:12:17-07:00</lastmod>
+    <loc>https://www.silentrobots.com/</loc>
+    <lastmod>2016-05-28T17:49:46-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/about/</loc>
-    <lastmod>2016-03-29T10:12:17-07:00</lastmod>
+    <loc>https://www.silentrobots.com/about/</loc>
+    <lastmod>2016-05-28T17:49:46-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/projects/</loc>
-    <lastmod>2016-03-29T10:12:17-07:00</lastmod>
+    <loc>https://www.silentrobots.com/projects/</loc>
+    <lastmod>2016-05-28T17:49:46-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://www.silentrobots.com/list_posts.html</loc>
-    <lastmod>2016-03-29T10:12:17-07:00</lastmod>
+    <loc>https://www.silentrobots.com/list_posts.html</loc>
+    <lastmod>2016-05-28T17:49:46-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Silent Robot Systems]]></title>
-  <link href="http://www.silentrobots.com/atom.xml" rel="self"/>
-  <link href="http://www.silentrobots.com/"/>
-  <updated>2016-03-29T10:12:17-07:00</updated>
-  <id>http://www.silentrobots.com/</id>
+  <link href="https://www.silentrobots.com/atom.xml" rel="self"/>
+  <link href="https://www.silentrobots.com/"/>
+  <updated>2016-05-28T17:49:46-07:00</updated>
+  <id>https://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
     
@@ -14,11 +14,27 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Exploiting XXE In File Upload Functionality]]></title>
+    <link href="https://www.silentrobots.com/blog/2016/04/30/exploiting-xxe-in-file-upload/"/>
+    <updated>2016-04-30T21:00:00-07:00</updated>
+    <id>https://www.silentrobots.com/blog/2016/04/30/exploiting-xxe-in-file-upload</id>
+    <content type="html"><![CDATA[<p>Just wanted to post some details from my BH USA 2015 briefing &ldquo;Exploiting XXE In File Upload Functionality&rdquo;.</p>
+
+<!-- more -->
+
+
+<p>The youtube video is up: <a href="https://www.youtube.com/watch?v=ouBwRZJHmmo">https://www.youtube.com/watch?v=ouBwRZJHmmo</a></p>
+
+<p>I also gave an updated version of the presentation in November for the Blackhat Webcast Series. It included more file types; PDF, JPG, and GIF. The link is here: <a href="https://www.blackhat.com/html/webcast/11192015-exploiting-xml-entity-vulnerabilities-in-file-parsing-functionality.html">https://www.blackhat.com/html/webcast/11192015-exploiting-xml-entity-vulnerabilities-in-file-parsing-functionality.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Cloud Metadata URL List]]></title>
-    <link href="http://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list/"/>
+    <link href="https://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list/"/>
     <updated>2016-03-27T21:00:00-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list</id>
-    <content type="html"><![CDATA[<p>Managed to land the SSRF Cloud Metadata technique in a few different scenarios recently. If you haven&rsquo;t seen the talk <a href="https://youtu.be/JTOWxi17k-w?t=1411">BHUSA 2014 - Bringing a Machete to the Amazon</a> I recommend it.</p>
+    <id>https://www.silentrobots.com/blog/2016/03/27/cloud_metadata_list</id>
+    <content type="html"><![CDATA[<p>Landed the SSRF Cloud Metadata technique in a few different scenarios recently. If you haven&rsquo;t seen the talk <a href="https://youtu.be/JTOWxi17k-w?t=1411">BHUSA 2014 - Bringing a Machete to the Amazon</a> I recommend it.</p>
 
 <!-- more -->
 
@@ -31,9 +47,9 @@
   
   <entry>
     <title type="html"><![CDATA[XML Entity Cheatsheet - Updated]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update/"/>
+    <link href="https://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update/"/>
     <updated>2015-12-14T20:00:00-08:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update</id>
+    <id>https://www.silentrobots.com/blog/2015/12/14/xe-cheatsheet-update</id>
     <content type="html"><![CDATA[<p>An XML Entity testing cheatsheet. This is an updated version with nokogiri tests removed, just (X)XE notes.</p>
 
 <!-- more -->
@@ -145,9 +161,9 @@
   
   <entry>
     <title type="html"><![CDATA[Blackhat 2015 Arsenal]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/"/>
+    <link href="https://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal/"/>
     <updated>2015-09-10T14:56:34-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal</id>
+    <id>https://www.silentrobots.com/blog/2015/09/10/blackhat-2015-arsenal</id>
     <content type="html"><![CDATA[<p>Last month at Blackhat Arsenal 2015, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. This was our second time at Arsenal. Yet again, awesome people, great venue, and overall a highlight for me of BH/DC/LV. We got some excellent feedback on the project, so thank you to anyone who stopped by<!-- more -->.</p>
 
 <p>Last year I posted the top 3 feature requests and we squashed them (woot!). These are requested features/bugs this year and their associated issue on github:</p>
@@ -179,9 +195,9 @@
   
   <entry>
     <title type="html"><![CDATA[Simple Ruby Exec with Open and Pipe]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec/"/>
+    <link href="https://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec/"/>
     <updated>2015-04-13T21:00:00-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec</id>
+    <id>https://www.silentrobots.com/blog/2015/04/13/simple_ruby_exec</id>
     <content type="html"><![CDATA[<p>I was researching something else and thought this was a cool way to execute a command through the open method in ruby:</p>
 
 <!-- more -->
@@ -210,15 +226,15 @@
   
   <entry>
     <title type="html"><![CDATA[Exploiting XXE Vulnerabilities in OXML Documents - Part 1]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/03/04/oxml_xxe/"/>
+    <link href="https://www.silentrobots.com/blog/2015/03/04/oxml_xxe/"/>
     <updated>2015-03-04T20:00:00-08:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/03/04/oxml_xxe</id>
+    <id>https://www.silentrobots.com/blog/2015/03/04/oxml_xxe</id>
     <content type="html"><![CDATA[<p>OXML is a common document format; think docx (Microsoft Word Document), pptx (Microsoft Powerpoint), xlsx (Excel Spreadsheet), etc.</p>
 
 <!-- more -->
 
 
-<p>In actuality a OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
+<p>An OXML document is a zip file containing XML files and any media files. When the document is rendered, the rendering library unzips the document and then parses the containing XML files. The order the XML files are parsed and which files maintain precedence over the others is dependent on the type of document. The following link is from Microsoft on the XML structure in Office 2007 files: <a href="https://msdn.microsoft.com/en-us/library/aa338205%28v=office.12%29.aspx#office2007aboutnewfileformat_structureoftheofficexmlformats">File format structure</a></p>
 
 <p>I have had success in the past embedding XML External Entities into the XML files of a docx, the XXE is exploited when the document is parsed. An easy example of this would be in file upload functionality that allows docx, pptx, or xlsx. Facebook was found vulnerable to this exact scenario in December 2014; <a href="http://threatpost.com/xxe-bug-patched-in-facebook-careers-third-party-service">XXE Bug Patched in Facebook</a>.</p>
 
@@ -232,9 +248,9 @@
   
   <entry>
     <title type="html"><![CDATA[ldapsearch notes]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes/"/>
+    <link href="https://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes/"/>
     <updated>2015-02-25T20:00:00-08:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes</id>
+    <id>https://www.silentrobots.com/blog/2015/02/25/ldapsearch_notes</id>
     <content type="html"><![CDATA[<p>I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch</p>
 
 <!-- more -->
@@ -268,9 +284,9 @@
   
   <entry>
     <title type="html"><![CDATA[Search all Github Repositories for an Organization]]></title>
-    <link href="http://www.silentrobots.com/blog/2015/01/09/gumbler-updates/"/>
+    <link href="https://www.silentrobots.com/blog/2015/01/09/gumbler-updates/"/>
     <updated>2015-01-09T20:00:00-08:00</updated>
-    <id>http://www.silentrobots.com/blog/2015/01/09/gumbler-updates</id>
+    <id>https://www.silentrobots.com/blog/2015/01/09/gumbler-updates</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits and introduced in the blog post <a href="http://www.silentrobots.com/blog/2014/10/06/gumbler/">&ldquo;Searching Through Git Commits&rdquo;</a>. Recently I wanted to run Gumbler across all repositories for an organization, the steps are discussed below. <!--more--></p>
 
 <p>First, we need to grab a list of repositories for the ORG. This can be done using the API</p>
@@ -341,9 +357,9 @@
   
   <entry>
     <title type="html"><![CDATA[Searching Through Git Commits]]></title>
-    <link href="http://www.silentrobots.com/blog/2014/10/05/gumbler/"/>
+    <link href="https://www.silentrobots.com/blog/2014/10/05/gumbler/"/>
     <updated>2014-10-05T21:00:00-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2014/10/05/gumbler</id>
+    <id>https://www.silentrobots.com/blog/2014/10/05/gumbler</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/BuffaloWill/gumbler">gumbler</a> is a script I wrote to search through git commits. Examples from github are discussed below.</p>
 
 <!-- more -->
@@ -461,9 +477,9 @@
   
   <entry>
     <title type="html"><![CDATA[XML Entity Cheatsheet]]></title>
-    <link href="http://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet/"/>
+    <link href="https://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet/"/>
     <updated>2014-09-02T21:00:00-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet</id>
+    <id>https://www.silentrobots.com/blog/2014/09/02/xe-cheatsheet</id>
     <content type="html"><![CDATA[<p>An XML Entity testing cheatsheet. Testing was done using an older vulnerable version of nokogiri. In IRB you can require previous versions of gems. Certain techniques (e.g. XInclude) may require additional settings in Nokogiri.</p>
 
 <!-- more -->
@@ -558,9 +574,9 @@
   
   <entry>
     <title type="html"><![CDATA[IPv6 DNS Guessing Notes]]></title>
-    <link href="http://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance/"/>
+    <link href="https://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance/"/>
     <updated>2014-08-18T21:00:00-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance</id>
+    <id>https://www.silentrobots.com/blog/2014/08/18/ipv6-dns-reconnaisance</id>
     <content type="html"><![CDATA[<p>A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see <a href="http://en.wikipedia.org/wiki/AAAA_record">AAAA record</a>). There are many DNS hostname bruteforcing tools, personally I like <a href="http://ha.ckers.org/fierce/">Fierce</a>. Suppose we have already run our hostname bruteforcing tool against a target domain (e.g. facebook.com). Below we use dig to do a AAAA record lookup for each hostname. <!--more-->Note, the DNS server we use matters. In this example we use 8.8.8.8, to confirm different results try using a.ns.facebook.com instead. Host can also be used instead of dig:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -607,9 +623,9 @@
   
   <entry>
     <title type="html"><![CDATA[Blackhat 2014 Arsenal Experience]]></title>
-    <link href="http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/"/>
+    <link href="https://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience/"/>
     <updated>2014-08-11T14:56:34-07:00</updated>
-    <id>http://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience</id>
+    <id>https://www.silentrobots.com/blog/2014/08/11/blackhat-2014-arsenal-experience</id>
     <content type="html"><![CDATA[<p>Last week at Blackhat Arsenal 2014, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. Arsenal was a great experience and I would highly recommend to anyone as an attendee or presenter. We got some great feedback on the project, so thank you to anyone who stopped by<!-- more -->.</p>
 
 <p>Here were the top 3 feature requests and their associated issue on github:</p>
