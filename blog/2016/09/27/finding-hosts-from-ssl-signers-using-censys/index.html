@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Finding Hosts Using SSL Certificate Organization And Censys - Silent Robot Systems</title>
+  <meta name="author" content="Willis Vandevanter">
+
+  
+  <meta name="description" content="Finding Hosts Using SSL Certificate Organization And Censys Finding hosts or domain names associated with a company where the domain name does not &hellip;">
+  
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href=" { { site.url } }{ { page.url } }" />
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="/javascripts/jquery.sidr.min.js"></script>
+  <script src="/javascripts/ah-blue.js"></script>
+  
+
+  <script type="text/javascript">
+      var host = "www.silentrobots.com";
+      if ((host == window.location.host) && (window.location.protocol != "https:"))
+          window.location.protocol = "https";
+  </script>
+</head> 
+
+<body   >
+  <div class="aux-container">
+    <a id="nav-toggle" href="#sidr"></a>
+    <a id="search-toggle"></a>
+</div>
+
+<!--
+<header class="header-container clearfix">
+        <a href="/"><img src="/images/srs_head.png" height=200 width=200 align=right></a>
+</header>
+-->
+
+
+  <div class="main-container">
+    <div class="main wrapper clearfix">
+    	
+    	<aside>
+			
+			  	<div class="search-container">
+					<br>
+					<center><a href="/"><img src="/images/srs_head.png" height=200 width=200></a></center>
+					<br>
+					<div id="main-nav">
+    <nav>
+        <ul>
+        	<li>
+        		
+					<h3>Recent Posts</h3>
+<ul>
+	
+    <li>
+    	<a href="/blog/2016/09/27/finding-hosts-from-ssl-signers-using-censys/">Finding Hosts Using SSL Certificate Organization And Censys</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2016/04/30/exploiting-xxe-in-file-upload/">Exploiting XXE In File Upload Functionality</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2016/03/27/cloud_metadata_list/">Cloud Metadata URL List</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/12/14/xe-cheatsheet-update/">XML Entity Cheatsheet - Updated</a>
+    </li>
+    
+    <li>
+    	<a href="/blog/2015/09/10/blackhat-2015-arsenal/">Blackhat 2015 Arsenal</a>
+    </li>
+    
+</ul>
+
+				
+        	</li>
+        	<li>
+        		<ul>
+                    <li><a href="/about" target="_blank">About</a>
+                    <li><a href="/projects" target="_blank">Projects</a>
+        		</ul>
+        	</li>
+        	<li>
+        		<ul>
+        			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
+        		</ul>
+        	</li>
+        </ul>
+    </nav>
+</div>
+
+					<br><br><br>
+				</div>
+			
+		</aside>
+		
+		<br><br><br><br>
+      <div>
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1>
+      Finding Hosts Using SSL Certificate Organization And Censys
+    </h1>
+  
+</header>
+
+  <section><p>Finding hosts or domain names associated with a company where the domain name does not include the name of the company can sometimes be difficult. There are common ways to do it such as <!--more--> ASN or scope information (e.g. bug bounty ToE or IP block).</p>
+
+<p>One technique that I use (and I am guessing others do as well) is using the Organization field in an SSL Certificate. For example, a certificate from <a href="https://www.facebook.com">https://www.facebook.com</a> and <a href="https://parse.com">https://parse.com</a> are signed by the same organization.</p>
+
+<p><img class="center" src="/images/facebook.png" width="600" height="200"></p>
+
+<p><img class="center" src="/images/parse.png" width="600" height="200"></p>
+
+<p>This is an easy example. Parse is listed on the Facebook Mergers or Acquisitions page (<a href="https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Facebook">https://en.wikipedia.org/wiki/List_of_mergers_and_acquisitions_by_Facebook</a>) and the FB bug bounty terms (<a href="https://www.facebook.com/whitehat">https://www.facebook.com/whitehat</a>).</p>
+
+<p>However, consider a more complex example like <a href="https://hackerone.com/reports/154425">&ldquo;HackerOne: Subdomain takeover on https://fastly.sc-cdn.net/&rdquo;</a>.</p>
+
+<p>First, if you aren&rsquo;t familiar with sub-domain take over <a href="https://shubs.io/high-frequency-security-bug-hunting-120-days-120-bugs/">this</a> and <a href="https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/">this</a> are awesome.</p>
+
+<p>In the case above, the subdomain fastly.sc-cdn.net is owned by Snapchat which is not obvious from the domain name. Personally, I do not know how ebrietas found that domain. DNS Bruteforcing would work. It could also be done by matching SSL Certificates on the Organization name.</p>
+
+<p>A few months back I wrote a <a href="GIST">script</a> that uses the Censys API to look for domains with the same Organization field in the SSL certificate.</p>
+
+<p>For example:</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby censys_cert_search.rb 'Snapchat Inc.'
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Page: 1
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["se.snap-dev.net"], "parsed.subject.common_name"=&gt;["se.snap-dev.net"]}
+</span><span class='line'>|+| Checking se.snap-dev.net
+</span><span class='line'>se.snap-dev.net.  300 IN  A   107.178.248.183
+</span><span class='line'>se.snap-dev.net.  300 IN  A   107.178.248.183
+</span><span class='line'>|+| Checking se.snap-dev.net
+</span><span class='line'>se.snap-dev.net.  300 IN  A   107.178.248.183
+</span><span class='line'>se.snap-dev.net.  300 IN  A   107.178.248.183
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["spectre.sc-corp.net"], "parsed.subject.common_name"=&gt;["spectre.sc-corp.net"]}
+</span><span class='line'>|+| Checking spectre.sc-corp.net
+</span><span class='line'>spectre.sc-corp.net.  300 IN  A   130.211.14.254
+</span><span class='line'>spectre.sc-corp.net.  300 IN  A   130.211.14.254
+</span><span class='line'>|+| Checking spectre.sc-corp.net
+</span><span class='line'>spectre.sc-corp.net.  300 IN  A   130.211.14.254
+</span><span class='line'>spectre.sc-corp.net.  300 IN  A   130.211.14.254
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>If you checkout the code, the script is:</p>
+
+<p>1.&nbsp;Using the Censys Certificate API to search on the Organization string matching &lsquo;Snapchat Inc.&rsquo; (i.e. O=Snapchat Inc.*)</p>
+
+<p>2.&nbsp;Parsing out the Common Name and Alternate Names from the SSL Certificate response</p>
+
+<p>3.&nbsp;Performing a DNS lookup for each name found</p>
+
+<p>You can also run the script to skip over common names that could&rsquo;ve been easily found in other ways (e.g. dev.snapchat.com). This focuses the effort on hard to find systems. Adding a third argument skips DNS lookup.</p>
+
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby censys_cert_search.rb 'Snapchat Inc.' '*snapchat.com' false
+</span><span class='line'>
+</span><span class='line'>Page: 1
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["se.snap-dev.net"], "parsed.subject.common_name"=&gt;["se.snap-dev.net"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["spectre.sc-corp.net"], "parsed.subject.common_name"=&gt;["spectre.sc-corp.net"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["*.targeting.snapads.com", "targeting.snapads.com"], "parsed.subject.common_name"=&gt;["*.targeting.snapads.com"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["*.snapchat.com", "snapchat.com"], "parsed.subject.common_name"=&gt;["*.snapchat.com"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["rest-escluster.hydrasearch.sc-prod.net"], "parsed.subject.common_name"=&gt;["rest-escluster.hydrasearch.sc-prod.net"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["*.snapchat.com", "snapchat.com"], "parsed.subject.common_name"=&gt;["*.snapchat.com"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["restfulgit.sc-corp.net"], "parsed.subject.common_name"=&gt;["restfulgit.sc-corp.net"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["attribution.snapads.com"], "parsed.subject.common_name"=&gt;["attribution.snapads.com"]}
+</span><span class='line'>{"parsed.extensions.subject_alt_name.dns_names"=&gt;["*.snapchat.com", "snapchat.com", "mail.support.snapchat.com"], "parsed.subject.common_name"=&gt;["*.snapchat.com"]}
+</span><span class='line'>....</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+<p>As you can see not perfect but I&rsquo;ve found it really useful in the past. It was hack for something else and I&rsquo;ll update as time permits.</p>
+</section>
+
+
+
+	
+</article>
+</div>
+
+    </div>
+  </div>
+  
+
+
+  
+
+</body>
+</html>
