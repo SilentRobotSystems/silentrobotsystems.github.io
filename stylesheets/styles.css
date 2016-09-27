@@ -738,7 +738,7 @@ h1 {
 }
 h1 a {
     color: #1e1e1e;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .main article .article-date, .main article .article-tags {
     color: #ababab;
