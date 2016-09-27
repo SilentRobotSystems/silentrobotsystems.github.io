@@ -130,7 +130,7 @@
 
   <section><p>Finding hosts or domain names associated with a company where the domain name does not include the name of the company can sometimes be difficult. There are common ways to do it such as <!--more--> ASN or scope information (e.g. bug bounty ToE or IP block).</p>
 
-<p>One technique that I use (and I am guessing others do as well) is using the Organization field in an SSL Certificate. For example, a certificate from <a href="https://www.facebook.com">https://www.facebook.com</a> and <a href="https://parse.com">https://parse.com</a> are signed by the same organization.</p>
+<p>One technique that I use (and I am guessing others do as well) is through an Organization field in a SSL Certificate that is shared by multiple domains. For example, a certificate from <a href="https://www.facebook.com">https://www.facebook.com</a> and <a href="https://parse.com">https://parse.com</a> are signed by the same organization.</p>
 
 <p><img class="center" src="/images/facebook.png" width="600" height="200"></p>
 
@@ -142,7 +142,7 @@
 
 <p>First, if you aren&rsquo;t familiar with sub-domain take over <a href="https://shubs.io/high-frequency-security-bug-hunting-120-days-120-bugs/">this</a> and <a href="https://labs.detectify.com/2014/10/21/hostile-subdomain-takeover-using-herokugithubdesk-more/">this</a> are awesome.</p>
 
-<p>In the case above, the subdomain fastly.sc-cdn.net is owned by Snapchat which is not obvious from the domain name. Personally, I do not know how ebrietas found that domain. DNS Bruteforcing would work. It could also be done by matching SSL Certificates on the Organization name.</p>
+<p>In the case above, the subdomain fastly.sc-cdn.net is owned by Snapchat which is not obvious from the domain name. Personally, I do not know how ebrietas found that domain. DNS Bruteforcing would work. It could also be done by shared SSL Certificates on the Organization name.</p>
 
 <p>A few months back I wrote a <a href="https://gist.github.com/BuffaloWill/a4862b377404b15830b7cada1f6731a5">script</a> that uses the Censys API to look for domains with the same Organization field in the SSL certificate.</p>
 
