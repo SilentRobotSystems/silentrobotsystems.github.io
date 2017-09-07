@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Simple Ruby Exec with Open and Pipe - Silent Robot Systems</title>
+  <title>IPv6 DNS Guessing Notes - Silent Robot Systems</title>
   <meta name="author" content="Willis Vandevanter">
 
   
-  <meta name="description" content="Simple Ruby Exec with Open and Pipe I was researching something else and thought this was a cool way to execute a command through the open method in &hellip;">
+  <meta name="description" content="IPv6 DNS Guessing Notes A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see AAAA record). There are many DNS hostname &hellip;">
   
 
   <meta name="HandheldFriendly" content="True">
@@ -75,11 +75,11 @@
     </li>
     
     <li>
-    	<a href="/blog/2016/04/30/exploiting-xxe-in-file-upload/">Exploiting XXE In File Upload Functionality</a>
+    	<a href="/blog/2016/05/01/exploiting-xxe-in-file-upload/">Exploiting XXE In File Upload Functionality</a>
     </li>
     
     <li>
-    	<a href="/blog/2016/03/27/cloud_metadata_list/">Cloud Metadata URL List</a>
+    	<a href="/blog/2016/03/28/cloud_metadata_list/">Cloud Metadata URL List</a>
     </li>
     
     <li>
@@ -100,7 +100,7 @@
         	<li>
         		<ul>
         			<li>Github - <a href="http://www.github.com/BuffaloWill" target="_blank">github.com/BuffaloWill</a></li>
-                    <li>Twitter - <a href="http://www.twitter.com/_will_is_" target="_blank">@_will_is_</a></li>
+                    <li>Twitter - <a href="http://www.twitter.com/0xRST" target="_blank">@0xRST</a></li>
                     <li>Email - <a href="" target="_blank">will _at_ silentrobots.com</a></li>
         		</ul>
         	</li>
@@ -124,34 +124,52 @@
   </div>
   
     <h1>
-      Simple Ruby Exec with Open and Pipe
+      IPv6 DNS Guessing Notes
     </h1>
   
 </header>
 
-  <section><p>I was researching something else and thought this was a cool way to execute a command through the open method in ruby:</p>
-
-<!-- more -->
-
+  <section><p>A hostname with an IPv6 address is stored as a AAAA resource record in DNS (see <a href="http://en.wikipedia.org/wiki/AAAA_record">AAAA record</a>). There are many DNS hostname bruteforcing tools, personally I like <a href="http://ha.ckers.org/fierce/">Fierce</a>. Suppose we have already run our hostname bruteforcing tool against a target domain (e.g. facebook.com). Below we use dig to do a AAAA record lookup for each hostname. <!--more-->Note, the DNS server we use matters. In this example we use 8.8.8.8, to confirm different results try using a.ns.facebook.com instead. Host can also be used instead of dig:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>open("|[CMD]")</span></code></pre></td></tr></table></div></figure></notextile></div>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; cat fb_hosts.txt | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>mobile.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>ipv6.facebook.com Results:
+</span><span class='line'>
+</span><span class='line'>www.facebook.com Results:
+</span><span class='line'>www.facebook.com. 1903    IN  CNAME   star.c10r.facebook.com.
+</span><span class='line'>star.c10r.facebook.com.   30  IN  AAAA    2a03:2880:f00b:900:face:b00c:0:1</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>The key is starting the open with pipe. For example,</p>
+<p>An offline/quieter way is to use the <a href="https://scans.io/study/sonar.fdns">DNS Record (ANY)</a> set from the Internet-Wide Scan Data Repository done by Rapid7. Using facebook.com as an example again:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>open("|ls")</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | grep -i "\.facebook\.com" | grep AAAA</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>Or to exec and print the result in one line:</p>
+<p>This didn&rsquo;t turn up very many results but we can combine the two:</p>
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>open("|ls").each {|out| puts out }</span></code></pre></td></tr></table></div></figure></notextile></div>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$&gt; pigz -dc 20140310_dnsrecords.gz | zgrep "\.facebook\.com" | grep ",A," | cut -d"," -f1 | while read line; do echo $line" Results:" && dig @8.8.8.8 +noall +answer AAAA $line && echo; done
+</span><span class='line'>...
+</span><span class='line'>z.c10r.facebook.com Results:
+</span><span class='line'>z.c10r.facebook.com.    59      IN      AAAA    2a03:2880:f00b:305:face:b00c:0:1
+</span><span class='line'>...</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p>Not sure where I saw it originally, but this is an interesting older read:
-<a href="https://devver.wordpress.com/2009/06/30/a-dozen-or-so-ways-to-start-sub-processes-in-ruby-part-1/">https://devver.wordpress.com/2009/06/30/a-dozen-or-so-ways-to-start-sub-processes-in-ruby-part-1/</a></p>
+<p>You get the idea =). Not a new concept or technique, just wanted to put some notes in one place.</p>
 </section>
 
 
