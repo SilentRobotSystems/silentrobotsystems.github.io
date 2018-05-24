@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="https://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="https://www.silentrobots.com/"/>
-  <updated>2018-05-24T17:09:19-04:00</updated>
+  <updated>2018-05-24T17:15:39-04:00</updated>
   <id>https://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -47,8 +47,6 @@
 
 
 <h1>Run nessus results through aquatone</h1>
-
-<p>Like many people, the dance between recon and testing for me is cyclical. This means taking the output from one tool and running it back through a different OSINT or recon tool and back again.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
