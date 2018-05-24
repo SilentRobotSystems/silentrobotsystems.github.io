@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="https://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="https://www.silentrobots.com/"/>
-  <updated>2017-09-07T10:04:35-04:00</updated>
+  <updated>2018-05-24T17:09:19-04:00</updated>
   <id>https://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[odle: piping security data]]></title>
+    <link href="https://www.silentrobots.com/blog/2018/05/24/odle-helpful-security-scan-data-analysis/"/>
+    <updated>2018-05-24T16:24:21-04:00</updated>
+    <id>https://www.silentrobots.com/blog/2018/05/24/odle-helpful-security-scan-data-analysis</id>
+    <content type="html"><![CDATA[<p>I recently published <a href="https://github.com/BuffaloWill/odle">odle</a> which is a Ruby gem and binary that takes XML data from various security tools and outputs their JSON equivalent. The goal is to be (1) simple, (2) fast, and (3) work on many platforms with only one dependency &ndash; nokogiri.</p>
+
+<p><img class="center" src="https://www.silentrobots.com/images/odle.gif" width="715" height="600"></p>
+
+<p>Below are two examples using odle to convert output from one tool (e.g. burpsuite) as input for something else (e.g. nmap scans). <!-- more --> From the command line I typically use odle with <a href="https://github.com/tomnomnom/gron">gron</a> which is an awesome tool that &ldquo;makes json greppable&rdquo; =).</p>
+
+<h1>Convert Burp to nmap script scan</h1>
+
+<p>Often I will take the passive data from one tool and feed it into another tool. One example is burp to something else; in this case, nmap script checks.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat burp-scan.xml | odle --burp | gron | grep -i 'affected_hosts' | cut -d \" -f4 | cut -d/ -f3 | cut -d' ' -f1 | sort | uniq | xargs printf "nmap -sS -Pn -p 21 --script ftp-anon %s \n"
+</span><span class='line'>
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon apis.google.com 
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon developer.cdn.mozilla.net 
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon fakesite.com 
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon fonts.googleapis.com 
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon safebrowsing-cache.google.com 
+</span><span class='line'>nmap -sS -Pn -p 21 --script ftp-anon safebrowsing.google.com </span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Run nessus results through aquatone</h1>
+
+<p>Like many people, the dance between recon and testing for me is cyclical. This means taking the output from one tool and running it back through a different OSINT or recon tool and back again.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat nessus_v2.xml | odle --nessus | ~/Downloads/gron | grep -i 'affected_hosts' | cut -d \" -f4 | cut -d/ -f3 | cut -d' ' -f1 | sort | uniq | xargs printf "aquatone --discover %s \n"
+</span><span class='line'>
+</span><span class='line'>aquatone --discover admin.fb.com
+</span><span class='line'>aquatone --discover js.fb.com
+</span><span class='line'>aquatone --discover blah.fb.com</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Install</h1>
+
+<p>To install aquatone you will need ruby and nokogiri:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install nokogiri
+</span><span class='line'>gem install odle</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Bugs</h1>
+
+<p>I am sure there are plenty. Please submit an issue if you find one or if you would like to see other supported tools. I am also interested in inconsistencies between outputs, missing data, and other issues if you see them.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Exploiting CVE-2016-4264 With OXML_XXE]]></title>
