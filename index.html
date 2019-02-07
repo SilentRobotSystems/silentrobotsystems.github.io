@@ -9,7 +9,7 @@
   <meta name="author" content="Willis Vandevanter">
 
   
-  <meta name="description" content="odle: piping security data I recently published odle which is a Ruby gem and binary that takes XML data from various security tools and outputs &hellip;">
+  <meta name="description" content="SSRF Protocol Smuggling in Plaintext Credential Handlers : LDAP SSRF protocol smuggling involves an attacker injecting one TCP protocol into a &hellip;">
   
 
   <meta name="HandheldFriendly" content="True">
@@ -21,6 +21,7 @@
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/styles.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Silent Robot Systems" type="application/atom+xml">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -67,6 +68,10 @@
 <ul>
 	
     <li>
+    	<a href="/blog/2019/02/06/ssrf-protocol-smuggling-in-plaintext-credential-handlers-ldap/">SSRF Protocol Smuggling in Plaintext Credential Handlers : LDAP</a>
+    </li>
+    
+    <li>
     	<a href="/blog/2018/05/24/odle-helpful-security-scan-data-analysis/">odle: piping security data</a>
     </li>
     
@@ -80,10 +85,6 @@
     
     <li>
     	<a href="/blog/2016/05/01/exploiting-xxe-in-file-upload/">Exploiting XXE In File Upload Functionality</a>
-    </li>
-    
-    <li>
-    	<a href="/blog/2016/03/28/cloud_metadata_list/">Cloud Metadata URL List</a>
     </li>
     
 </ul>
@@ -115,6 +116,71 @@
 		
 		<br><br><br><br>
       
+
+
+<article>
+	<header>
+  <div class="article-tags">
+      
+
+
+  </div>
+  
+    <h1><a href="/blog/2019/02/06/ssrf-protocol-smuggling-in-plaintext-credential-handlers-ldap/">
+      SSRF Protocol Smuggling in Plaintext Credential Handlers : LDAP
+    </a></h1>
+  
+</header>
+
+  <section><p>SSRF protocol smuggling involves an attacker injecting one TCP protocol into a dissimilar TCP protocol. A classic example is using gopher (i.e. the first protocol) to smuggle SMTP (i.e. the second protocol):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">gopher</span><span class="p">:</span><span class="sr">//</span><span class="mi">127</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">:</span><span class="mi">25</span><span class="o">/%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">AHELO</span><span class="o">%</span><span class="mi">20</span><span class="n">localhost</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">AMAIL</span><span class="o">%</span><span class="mi">20</span><span class="no">FROM</span><span class="o">%</span><span class="mi">3</span><span class="no">Abadguy</span><span class="vi">@evil</span><span class="o">.</span><span class="n">com</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">ARCPT</span><span class="o">%</span><span class="mi">20</span><span class="no">TO</span><span class="o">%</span><span class="mi">3</span><span class="no">Avictim</span><span class="vi">@site</span><span class="o">.</span><span class="n">com</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="no">ADATA</span><span class="o">%</span><span class="mi">0</span><span class="n">D</span><span class="o">%</span><span class="mi">0</span><span class="n">A</span> <span class="o">.</span><span class="n">.</span><span class="o">.</span><span class="n">.</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The keypoint above is the use of the CRLF character (i.e. %0D%0A) which breaks up the commands of the second protocol. <em>This attack is only possible with the ability to inject CRLF characters into a protocol</em>.</p>
+
+<p>Almost all LDAP client libraries support plaintext authentication or a non-ssl simple bind. For example, the following is an LDAP authentication example using Python 2.7 and the python-ldap library:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">ldap</span>
+</span><span class='line'><span class="n">conn</span> <span class="o">=</span> <span class="n">ldap</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s">&quot;ldap://[SERVER]:[PORT]&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">conn</span><span class="o">.</span><span class="n">simple_bind_s</span><span class="p">(</span><span class="s">&quot;[USERNAME]&quot;</span><span class="p">,</span> <span class="s">&quot;[PASSWORD]&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</section>
+  
+  
+  <footer>
+      <div class="article-date">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2019-02-06T12:58:21-05:00" pubdate data-updated="true"></time></div>
+  </footer>
+  
+
+
+
+	
+		<p><a href="/blog/2019/02/06/ssrf-protocol-smuggling-in-plaintext-credential-handlers-ldap/">Read on &rarr;</a></p>
+		
+</article>
 
 
 <article>
@@ -291,51 +357,6 @@
 
 	
 		<p><a href="/blog/2016/05/01/exploiting-xxe-in-file-upload/">Read on &rarr;</a></p>
-		
-</article>
-
-
-<article>
-	<header>
-  <div class="article-tags">
-      
-
-
-  </div>
-  
-    <h1><a href="/blog/2016/03/28/cloud_metadata_list/">
-      Cloud Metadata URL List
-    </a></h1>
-  
-</header>
-
-  <section><p>Landed the SSRF Cloud Metadata technique in a few different scenarios recently. If you haven&rsquo;t seen the talk <a href="https://youtu.be/JTOWxi17k-w?t=1411">BHUSA 2014 - Bringing a Machete to the Amazon</a> I recommend it.</p>
-
-</section>
-  
-  
-  <footer>
-      <div class="article-date">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-03-28T00:00:00-04:00" pubdate data-updated="true"></time></div>
-  </footer>
-  
-
-
-
-	
-		<p><a href="/blog/2016/03/28/cloud_metadata_list/">Read on &rarr;</a></p>
 		
 </article>
 

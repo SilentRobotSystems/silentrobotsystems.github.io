@@ -8,7 +8,8 @@
   border-style:dashed;
   border-width:1px;
   border-color:#e7e3e7;
-  padding: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 * + table th {

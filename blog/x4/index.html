@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ldapsearch notes - Silent Robot Systems</title>
+  <title>Silent Robot Systems</title>
   <meta name="author" content="Willis Vandevanter">
 
   
-  <meta name="description" content="ldapsearch notes I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch Installing &hellip;">
+  <meta name="description" content="Blackhat 2014 Arsenal Experience Last week at Blackhat Arsenal 2014, Pete and I (@will_is) presented on Serpico. Arsenal was a great experience and &hellip;">
   
 
   <meta name="HandheldFriendly" content="True">
@@ -115,7 +115,9 @@
 		</aside>
 		
 		<br><br><br><br>
-      <div>
+      
+
+
 <article>
 	<header>
   <div class="article-tags">
@@ -124,47 +126,50 @@
 
   </div>
   
-    <h1>
-      ldapsearch notes
-    </h1>
+    <h1><a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">
+      Blackhat 2014 Arsenal Experience
+    </a></h1>
   
 </header>
 
-  <section><p>I seem to find open LDAP servers on the Internet more often than I should. Here are some notes on using ldapsearch</p>
-
-<!-- more -->
-
-
-<h1>Installing ldapsearch on Ubuntu</h1>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install ldap-utils</span></code></pre></td></tr></table></div></figure></notextile></div>
+  <section><p>Last week at Blackhat Arsenal 2014, <a href="https://github.com/parzamendi-r7">Pete</a> and I (<a href="http://www.twitter.com/_will_is_">@<em>will_is</em></a>) presented on Serpico. Arsenal was a great experience and I would highly recommend to anyone as an attendee or presenter. We got some great feedback on the project, so thank you to anyone who stopped by</section>
+  
+  
+  <footer>
+      <div class="article-date">
+        
 
 
-<h1>Root-DSE object</h1>
-
-<p>nmap includes a script to gather info from a LDAP root-dse object (<a href="http://nmap.org/nsedoc/scripts/ldap-rootdse.html">http://nmap.org/nsedoc/scripts/ldap-rootdse.html</a>). We can also use ldapsearch to test:</p>
-
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -b "" -s base 'objectclass=*' -h [IP]</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 
-<p></p>
 
-<h1>Open LDAP server</h1>
 
-<p>Connect to an open LDAP server, john the ripper can be used to crack passwords that are returned:</p>
 
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ldapsearch -p [PORT] -x -h [IP] -b "dc=[y],dc=com"</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-</section>
+  
+
+
+<time datetime="2014-08-11T17:56:34-04:00" pubdate data-updated="true"></time></div>
+  </footer>
+  
 
 
 
 	
+		<p><a href="/blog/2014/08/11/blackhat-2014-arsenal-experience/">Read on &rarr;</a></p>
+		
 </article>
+
+<div class="pagination">
+
+
+	<a class="next" href="3">Newer &rarr;</a>
+
+
+<a class="next" href="3">Newer &rarr;</a>
+
 </div>
+
 
     </div>
   </div>
